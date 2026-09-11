@@ -1,222 +1,295 @@
-const EXAMPLE_COUNT = 12;
+// ============================================================
+// StreamN2L Demo
+// ============================================================
 
 
-/*
- * File name -> Display name
- */
-const METHODS = [
+// ------------------------------------------------------------
+// Examples shown on the webpage
+// ------------------------------------------------------------
+
+const examples = [
+    "example1",
+    "example2"
+];
+
+
+// ------------------------------------------------------------
+// Audio files
+//
+// Change this list according to the methods you want to show.
+// ------------------------------------------------------------
+
+const methods = [
     {
         file: "normal.wav",
         name: "Normal Speech",
-        type: "input",
-        tag: "Input"
+        category: "reference"
     },
 
     {
         file: "lombard.wav",
         name: "Lombard Speech",
-        type: "target",
-        tag: "Reference"
+        category: "reference"
     },
 
     {
         file: "cyclegan.wav",
         name: "CycleGAN",
-        type: "baseline",
-        tag: "Baseline"
+        category: "baseline"
     },
 
     {
         file: "stargan.wav",
         name: "StarGAN",
-        type: "baseline",
-        tag: "Baseline"
+        category: "baseline"
     },
 
     {
         file: "pgd_n2l.wav",
         name: "PGD-N2L",
-        type: "baseline",
-        tag: "Baseline"
-    },
-
-    {
-        file: "meanvc.wav",
-        name: "MeanVC",
-        type: "baseline",
-        tag: "Baseline"
-    },
-
-    {
-        file: "meanvc_p.wav",
-        name: "MeanVC-P",
-        type: "baseline",
-        tag: "Baseline"
-    },
-
-    {
-        file: "meanvc2_p.wav",
-        name: "MeanVC2-P",
-        type: "baseline",
-        tag: "Baseline"
+        category: "baseline"
     },
 
     {
         file: "streamvc.wav",
         name: "StreamVC",
-        type: "baseline",
-        tag: "Baseline"
+        category: "baseline"
+    },
+
+    {
+        file: "meanvc.wav",
+        name: "MeanVC",
+        category: "baseline"
+    },
+
+    {
+        file: "meanvc_p.wav",
+        name: "MeanVC-P",
+        category: "baseline"
+    },
+
+    {
+        file: "meanvc2_p.wav",
+        name: "MeanVC2-P",
+        category: "baseline"
     },
 
     {
         file: "streamn2l.wav",
         name: "StreamN2L",
-        type: "ours",
-        tag: "Ours"
+        category: "ours"
     }
 ];
 
 
-const examplesContainer =
-    document.getElementById("examples");
+// ------------------------------------------------------------
+// SNR configuration
+// ------------------------------------------------------------
+
+const snrOptions = {
+    clean: {
+        label: "Clean / No Noise",
+        folder: null
+    },
+
+    "-10": {
+        label: "SNR = −10 dB",
+        folder: "snr_-10dB"
+    },
+
+    "-7.5": {
+        label: "SNR = −7.5 dB",
+        folder: "snr_-7.5dB"
+    },
+
+    "-5": {
+        label: "SNR = −5 dB",
+        folder: "snr_-5dB"
+    },
+
+    "-2.5": {
+        label: "SNR = −2.5 dB",
+        folder: "snr_-2.5dB"
+    },
+
+    "0": {
+        label: "SNR = 0 dB",
+        folder: "snr_0dB"
+    }
+};
 
 
-/*
- * Create all examples
- */
-for (
-    let i = 1;
-    i <= EXAMPLE_COUNT;
-    i++
-) {
+// ------------------------------------------------------------
+// Current SNR
+// ------------------------------------------------------------
 
-    createExample(i);
+let currentSNR = "clean";
 
+
+// ------------------------------------------------------------
+// Generate examples
+// ------------------------------------------------------------
+
+function renderExamples() {
+
+    const container =
+        document.getElementById(
+            "examples-container"
+        );
+
+    container.innerHTML = "";
+
+    examples.forEach(
+        (example, index) => {
+
+            const exampleCard =
+                createExampleCard(
+                    example,
+                    index + 1
+                );
+
+            container.appendChild(
+                exampleCard
+            );
+        }
+    );
+
+    checkMissingAudio();
 }
 
 
-/*
- * Create one example card
- */
-function createExample(exampleNumber) {
+// ------------------------------------------------------------
+// Create one example card
+// ------------------------------------------------------------
+
+function createExampleCard(
+    example,
+    number
+) {
 
     const card =
-        document.createElement("article");
+        document.createElement(
+            "div"
+        );
 
-    card.className = "example-card";
+    card.className =
+        "example-card";
 
 
-    /*
-     * Header
-     */
+    // --------------------------------------------------------
+    // Header
+    // --------------------------------------------------------
+
     const header =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     header.className =
         "example-header";
 
 
     const title =
-        document.createElement("h3");
+        document.createElement(
+            "div"
+        );
 
     title.className =
         "example-title";
 
-    title.textContent =
-        `Example ${exampleNumber}`;
+    title.innerHTML =
+        `<span class="example-number">
+            Example ${number}
+         </span>`;
 
 
-    const number =
-        document.createElement("span");
+    const condition =
+        document.createElement(
+            "div"
+        );
 
-    number.className =
-        "example-number";
+    condition.className =
+        "example-condition";
 
-    number.textContent =
-        `Example ${String(exampleNumber).padStart(2, "0")}`;
+    condition.textContent =
+        snrOptions[currentSNR].label;
 
 
     header.appendChild(title);
-
-    header.appendChild(number);
-
-
-    /*
-     * Audio grid
-     */
-    const grid =
-        document.createElement("div");
-
-    grid.className =
-        "audio-grid";
+    header.appendChild(condition);
 
 
-    /*
-     * Add methods
-     */
-    METHODS.forEach(method => {
+    // --------------------------------------------------------
+    // Audio list
+    // --------------------------------------------------------
 
-        const item =
-            createAudioItem(
-                exampleNumber,
-                method
+    const audioList =
+        document.createElement(
+            "div"
+        );
+
+    audioList.className =
+        "audio-list";
+
+
+    methods.forEach(
+        method => {
+
+            const item =
+                createAudioItem(
+                    example,
+                    method
+                );
+
+            audioList.appendChild(
+                item
             );
-
-        grid.appendChild(item);
-
-    });
+        }
+    );
 
 
     card.appendChild(header);
+    card.appendChild(audioList);
 
-    card.appendChild(grid);
-
-    examplesContainer.appendChild(card);
-
+    return card;
 }
 
 
-/*
- * Create audio item
- */
+// ------------------------------------------------------------
+// Create audio item
+// ------------------------------------------------------------
+
 function createAudioItem(
-    exampleNumber,
+    example,
     method
 ) {
 
     const item =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     item.className =
-        "audio-item";
+        `audio-item ${method.category}`;
 
 
-    if (method.type === "ours") {
+    // --------------------------------------------------------
+    // Method name
+    // --------------------------------------------------------
 
-        item.classList.add("ours");
+    const info =
+        document.createElement(
+            "div"
+        );
 
-    }
-
-
-    if (method.type === "target") {
-
-        item.classList.add("target");
-
-    }
-
-
-    /*
-     * Label
-     */
-    const label =
-        document.createElement("div");
-
-    label.className =
-        "audio-label";
+    info.className =
+        "audio-info";
 
 
     const name =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     name.className =
         "audio-name";
@@ -225,86 +298,253 @@ function createAudioItem(
         method.name;
 
 
-    const tag =
-        document.createElement("span");
+    const category =
+        document.createElement(
+            "div"
+        );
 
-    tag.className =
-        `audio-tag ${method.type}`;
+    category.className =
+        "audio-category";
 
-    tag.textContent =
-        method.tag;
+    if (method.category === "ours") {
+
+        category.textContent =
+            "Ours";
+
+    } else if (
+        method.category === "reference"
+    ) {
+
+        category.textContent =
+            "Reference";
+
+    } else {
+
+        category.textContent =
+            "Baseline";
+    }
 
 
-    label.appendChild(name);
+    info.appendChild(name);
+    info.appendChild(category);
 
-    label.appendChild(tag);
 
+    // --------------------------------------------------------
+    // Audio
+    // --------------------------------------------------------
 
-    /*
-     * Audio element
-     */
     const audio =
-        document.createElement("audio");
-
-    audio.className =
-        "audio-player";
+        document.createElement(
+            "audio"
+        );
 
     audio.controls = true;
 
     audio.preload = "none";
 
+    audio.dataset.filename =
+        method.file;
 
-    const src =
-        `audio/example${exampleNumber}/${method.file}`;
-
-    audio.src = src;
-
-
-    /*
-     * If a file does not exist,
-     * hide this method automatically.
-     */
-    audio.addEventListener(
-        "error",
-        () => {
-
-            item.remove();
-
-        }
-    );
+    audio.src =
+        getAudioPath(
+            example,
+            method.file
+        );
 
 
-    /*
-     * Stop other audio when
-     * this one starts playing.
-     */
+    // --------------------------------------------------------
+    // Stop other audio when this one starts
+    // --------------------------------------------------------
+
     audio.addEventListener(
         "play",
         () => {
 
             document
                 .querySelectorAll(
-                    ".audio-player"
+                    "audio"
                 )
-                .forEach(other => {
+                .forEach(
+                    other => {
 
-                    if (other !== audio) {
-
-                        other.pause();
+                        if (
+                            other !== audio
+                            && !other.paused
+                        ) {
+                            other.pause();
+                        }
 
                     }
-
-                });
+                );
 
         }
     );
 
 
-    item.appendChild(label);
-
+    item.appendChild(info);
     item.appendChild(audio);
 
-
     return item;
-
 }
+
+
+// ------------------------------------------------------------
+// Generate audio path
+// ------------------------------------------------------------
+
+function getAudioPath(
+    example,
+    filename
+) {
+
+    if (currentSNR === "clean") {
+
+        return `audio/${example}/${filename}`;
+
+    }
+
+    const folder =
+        snrOptions[currentSNR].folder;
+
+    return `audio/${example}/${folder}/${filename}`;
+}
+
+
+// ------------------------------------------------------------
+// Change SNR
+// ------------------------------------------------------------
+
+function changeSNR(
+    snr
+) {
+
+    // --------------------------------------------------------
+    // Stop all audio
+    // --------------------------------------------------------
+
+    document
+        .querySelectorAll(
+            "audio"
+        )
+        .forEach(
+            audio => {
+
+                audio.pause();
+                audio.currentTime = 0;
+
+            }
+        );
+
+
+    currentSNR = snr;
+
+
+    // --------------------------------------------------------
+    // Update current condition
+    // --------------------------------------------------------
+
+    document
+        .getElementById(
+            "current-snr"
+        )
+        .textContent =
+        snrOptions[snr].label;
+
+
+    // --------------------------------------------------------
+    // Re-render examples
+    // --------------------------------------------------------
+
+    renderExamples();
+
+
+    // --------------------------------------------------------
+    // Update button states
+    // --------------------------------------------------------
+
+    document
+        .querySelectorAll(
+            ".snr-button"
+        )
+        .forEach(
+            button => {
+
+                button.classList.toggle(
+                    "active",
+                    button.dataset.snr === snr
+                );
+
+            }
+        );
+}
+
+
+// ------------------------------------------------------------
+// Check missing audio
+// ------------------------------------------------------------
+
+function checkMissingAudio() {
+
+    document
+        .querySelectorAll(
+            "audio"
+        )
+        .forEach(
+            audio => {
+
+                audio.addEventListener(
+                    "error",
+                    () => {
+
+                        const item =
+                            audio.closest(
+                                ".audio-item"
+                            );
+
+                        if (item) {
+
+                            item.classList.add(
+                                "audio-missing"
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+}
+
+
+// ------------------------------------------------------------
+// SNR button events
+// ------------------------------------------------------------
+
+document
+    .querySelectorAll(
+        ".snr-button"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    changeSNR(
+                        button.dataset.snr
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+// ------------------------------------------------------------
+// Initial render
+// ------------------------------------------------------------
+
+renderExamples();
