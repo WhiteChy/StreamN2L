@@ -842,4 +842,3 @@ document.addEventListener(
 
     }
 );
-```
