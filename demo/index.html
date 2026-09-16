@@ -96,87 +96,84 @@
          Noise selector
     ====================================================== -->
 
-    <section class="section" id="demo">
+   <section class="section" id="demo">
 
-        <div class="section-title">
-            <span>02</span>
-            Noise Conditions
+    <div class="section-title">
+        <span>02</span>
+        Noise Conditions
+    </div>
+
+    <div class="noise-panel">
+
+        <div class="noise-description">
+
+            <div class="noise-heading">
+                Select SNR
+            </div>
+
+            <div class="noise-subheading">
+                We recommend listening from top to bottom
+                to better perceive the gradual improvement
+                in speech intelligibility.
+            </div>
+
         </div>
 
-        <div class="noise-panel">
 
-            <div class="noise-description">
+        <div class="snr-selector">
 
-                <div class="noise-heading">
-                    Select SNR
-                </div>
+            <!-- SNR = -10 dB -->
 
-                <div class="noise-subheading">
-                    Choose a noise condition to compare
-                    the converted speech.
-                </div>
+            <button class="snr-button active"
+                    data-snr="-10">
 
-            </div>
-
-
-            <div class="snr-selector">
-
-                <!-- Clean -->
-
-                <button class="snr-button"
-                        data-snr="clean">
-
-                    <span class="snr-value">
-                        Clean
-                    </span>
-
-                    <span class="snr-label">
-                        No Noise
-                    </span>
-
-                </button>
-
-
-                <!-- -10 dB -->
-
-                <button class="snr-button active"
-                        data-snr="-10">
-
-                    <span class="snr-value">
-                        −10 dB
-                    </span>
-
-                    <span class="snr-label">
-                         Noisy
-                    </span>
-
-                </button>
-
-            </div>
-
-
-            <div class="current-condition">
-
-                <span>
-                    Current condition:
+                <span class="snr-value">
+                    −10 dB
                 </span>
 
-                <strong id="current-snr">
-                    SNR = −10 dB
-                </strong>
+                <span class="snr-label">
+                    Very Noisy
+                </span>
 
-            </div>
+            </button>
+
+
+            <!-- Clean -->
+
+            <button class="snr-button"
+                    data-snr="clean">
+
+                <span class="snr-value">
+                    Clean
+                </span>
+
+                <span class="snr-label">
+                    No Noise
+                </span>
+
+            </button>
 
         </div>
 
 
-        <!-- =================================================
-             Examples
-        ================================================== -->
+        <div class="current-condition">
 
-        <div id="examples-container"></div>
+            <span>
+                Current condition:
+            </span>
 
-    </section>
+            <strong id="current-snr">
+                SNR = −10 dB
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div id="examples-container"></div>
+
+</section>
 
 
     <!-- =====================================================
