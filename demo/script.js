@@ -192,8 +192,8 @@ function renderExamples() {
                 <div class="transcript-chinese">
                     ${
                         exampleIndex === 1
-                            ? "Corresponding text: 中国人非常友善和热情"
-                            : "Corresponding text: 中国银行卡产业近年来发展迅速。"
+                            ? "对应文本: 中国人非常友善和热情"
+                            : "对应文本: 中国银行卡产业近年来发展迅速。"
                     }
                 </div>
 
