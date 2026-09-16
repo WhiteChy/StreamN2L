@@ -377,29 +377,7 @@ main {
     text-decoration: underline;
 }
 
-/* ============================================================
-   Transcript (上一轮说的中英文文本)
-============================================================ */
 
-.example-transcript {
-    padding: 16px 24px 20px;
-    border-top: 1px solid #e5e7eb;
-    background: #fafafa;
-}
-
-.transcript-chinese {
-    font-size: 15px;
-    font-weight: 600;
-    color: #111827;
-    margin-bottom: 6px;
-}
-
-.transcript-english {
-    font-size: 15px;
-    font-weight: 600;
-    color: #111827;
-    margin-bottom: 6px;
-}
 /* ============================================================
    Noise panel
 ============================================================ */
@@ -865,14 +843,15 @@ footer strong {
 }
 
 .transcript-chinese {
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.5;
+}
+
+.transcript-english {
     font-size: 15px;
     font-weight: 600;
     color: #111827;
     margin-bottom: 6px;
-}
 
-.transcript-english {
-    font-size: 13px;
-    color: #6b7280;
-    line-height: 1.5;
 }
