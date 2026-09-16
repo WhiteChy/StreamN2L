@@ -10,49 +10,49 @@ const methods = [
         category: "reference"
     },
     {
-        file: "lombard.wav",
-        name: "Lombard Speech",
-        category: "reference"
-    },
-    {
         file: "cyclegan.wav",
         name: "CycleGAN",
-        category: "baseline"
+        category: "baseline-nonstream"
     },
     {
         file: "stargan.wav",
         name: "StarGAN",
-        category: "baseline"
-    },
-    {
-        file: "pgd_n2l.wav",
-        name: "PGD-N2L",
-        category: "baseline"
+        category: "baseline-nonstream"
     },
     {
         file: "streamvc.wav",
         name: "StreamVC",
-        category: "baseline"
+        category: "baseline-stream"
     },
     {
         file: "meanvc.wav",
         name: "MeanVC",
-        category: "baseline"
+        category: "baseline-stream"
     },
     {
         file: "meanvc_p.wav",
         name: "MeanVC-Pretrained",
-        category: "baseline"
+        category: "baseline-stream"
     },
     {
         file: "meanvc2_p.wav",
         name: "MeanVC2-Pretrained",
-        category: "baseline"
+        category: "baseline-stream"
+    },
+    {
+        file: "pgd_n2l.wav",
+        name: "PGD-N2L",
+        category: "baseline-nonstream"
     },
     {
         file: "streamn2l.wav",
         name: "StreamN2L",
         category: "ours"
+    },
+        {
+        file: "lombard.wav",
+        name: "Lombard Speech",
+        category: "reference"
     }
 ];
 
