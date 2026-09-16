@@ -255,16 +255,7 @@ document.addEventListener(
     "DOMContentLoaded",
     () => {
 
-        /*
-         * Important:
-         * Start directly from -10 dB.
-         * Clean speech is NOT the default condition.
-         */
-
         window.currentSNR = "-10";
-
-
-        /* Bind SNR buttons */
 
         document
             .querySelectorAll(".snr-button")
@@ -273,20 +264,146 @@ document.addEventListener(
                 button.addEventListener(
                     "click",
                     () => {
-
-                        updateSNR(
-                            button.dataset.snr
-                        );
-
+                        updateSNR(button.dataset.snr);
                     }
                 );
 
             });
 
-
-        /* Initial rendering */
-
         updateSNR("-10");
 
+        renderAblation();
     }
 );
+
+/* =========================================================
+   Ablation Study
+========================================================= */
+
+const ablationMethods = [
+    {
+        folder: "base-noda",
+        name: "Stage1 w/o Data Augmentation",
+        category: ""
+    },
+    {
+        folder: "base-nohu",
+        name: "Stage1 w/o Hubert Supervision",
+        category: ""
+    },
+    {
+        folder: "base-nospk",
+        name: "Stage1 w/o Gated Speaker Encoder",
+        category: ""
+    },
+    {
+        folder: "nopost",
+        name: "StreamN2L w/o Acoustic-guided Post-training",
+        category: ""
+    },
+    {
+        folder: "proposed-noacou",
+        name: "StreamN2L w/o Acoustic Loss",
+        category: ""
+    },
+    {
+        folder: "proposed-noGRPO",
+        name: "StreamN2L w/o GRPO Loss",
+        category: ""
+    }
+];
+
+
+function renderAblation() {
+
+    const container =
+        document.getElementById("ablation-container");
+
+    if (!container) {
+        return;
+    }
+
+    container.innerHTML = "";
+
+    for (let exampleIndex = 1; exampleIndex <= 2; exampleIndex++) {
+
+        const exampleCard =
+            document.createElement("div");
+
+        exampleCard.className = "example-card";
+
+        exampleCard.innerHTML = `
+            <div class="example-header">
+                <div class="example-number">
+                    Example ${exampleIndex}
+                </div>
+            </div>
+
+            <div class="audio-list"></div>
+        `;
+
+        const audioList =
+            exampleCard.querySelector(".audio-list");
+
+
+        ablationMethods.forEach(method => {
+
+            const audioItem =
+                document.createElement("div");
+
+            audioItem.className =
+                `audio-item ${method.category}`;
+
+            const audioPath =
+                `audio/ablation/${method.folder}/example${exampleIndex}.wav`;
+
+            audioItem.innerHTML = `
+                <div class="audio-info">
+                    <div class="audio-name">
+                        ${method.name}
+                    </div>
+                </div>
+
+                <audio controls preload="none">
+                    <source
+                        src="${audioPath}"
+                        type="audio/wav">
+                </audio>
+            `;
+
+            const audio =
+                audioItem.querySelector("audio");
+
+
+            audio.addEventListener("play", () => {
+
+                document
+                    .querySelectorAll("audio")
+                    .forEach(other => {
+
+                        if (other !== audio) {
+                            other.pause();
+                        }
+
+                    });
+
+            });
+
+
+            audio.addEventListener("error", () => {
+
+                audioItem.classList.add(
+                    "audio-missing"
+                );
+
+            });
+
+
+            audioList.appendChild(audioItem);
+
+        });
+
+
+        container.appendChild(exampleCard);
+    }
+}
