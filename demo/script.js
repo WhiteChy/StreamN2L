@@ -192,16 +192,16 @@ function renderExamples() {
                 <div class="transcript-chinese">
                     ${
                         exampleIndex === 1
-                            ? "中国人非常友善和热情"
-                            : "中国银行卡产业近年来发展迅速。"
+                            ? "Corresponding text: 中国人非常友善和热情"
+                            : "Corresponding text: 中国银行卡产业近年来发展迅速。"
                     }
                 </div>
 
                 <div class="transcript-english">
                     ${
                         exampleIndex === 1
-                            ? "Chinese people are very friendly and warm-hearted."
-                            : "China's bank card industry has developed rapidly in recent years."
+                            ? "Corresponding text: Chinese people are very friendly and warm-hearted."
+                            : "Corresponding text: China's bank card industry has developed rapidly in recent years."
                     }
                 </div>
 
