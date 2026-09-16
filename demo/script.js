@@ -310,6 +310,11 @@ const ablationMethods = [
         folder: "proposed-noGRPO",
         name: "StreamN2L w/o GRPO Loss",
         category: ""
+    },
+        {
+        folder: "proposed",
+        name: "StreamN2L",
+        category: ""
     }
 ];
 
