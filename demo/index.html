@@ -49,7 +49,8 @@
 
             <a class="button secondary"
                href="https://github.com/whitecchy/StreamN2L"
-               target="_blank">
+               target="_blank"
+               rel="noopener noreferrer">
                 GitHub
             </a>
 
@@ -120,40 +121,35 @@
 
             <div class="snr-selector">
 
-                <button class="snr-button active"
+                <!-- Clean -->
+
+                <button class="snr-button"
                         data-snr="clean">
-                    <span class="snr-value">Clean</span>
-                    <span class="snr-label">No Noise</span>
+
+                    <span class="snr-value">
+                        Clean
+                    </span>
+
+                    <span class="snr-label">
+                        No Noise
+                    </span>
+
                 </button>
 
-                <button class="snr-button"
+
+                <!-- -10 dB -->
+
+                <button class="snr-button active"
                         data-snr="-10">
-                    <span class="snr-value">−10 dB</span>
-                    <span class="snr-label">Very Noisy</span>
-                </button>
 
-                <button class="snr-button"
-                        data-snr="-7.5">
-                    <span class="snr-value">−7.5 dB</span>
-                    <span class="snr-label">Very Noisy</span>
-                </button>
+                    <span class="snr-value">
+                        −10 dB
+                    </span>
 
-                <button class="snr-button"
-                        data-snr="-5">
-                    <span class="snr-value">−5 dB</span>
-                    <span class="snr-label">Noisy</span>
-                </button>
+                    <span class="snr-label">
+                         Noisy
+                    </span>
 
-                <button class="snr-button"
-                        data-snr="-2.5">
-                    <span class="snr-value">−2.5 dB</span>
-                    <span class="snr-label">Noisy</span>
-                </button>
-
-                <button class="snr-button"
-                        data-snr="0">
-                    <span class="snr-value">0 dB</span>
-                    <span class="snr-label">Moderate</span>
                 </button>
 
             </div>
@@ -166,7 +162,7 @@
                 </span>
 
                 <strong id="current-snr">
-                    Clean / No Noise
+                    SNR = −10 dB
                 </strong>
 
             </div>

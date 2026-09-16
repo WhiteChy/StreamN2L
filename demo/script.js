@@ -1,23 +1,7 @@
-// ============================================================
-// StreamN2L Demo
-// ============================================================
-
-
-// ------------------------------------------------------------
-// Examples shown on the webpage
-// ------------------------------------------------------------
-
 const examples = [
     "example1",
     "example2"
 ];
-
-
-// ------------------------------------------------------------
-// Audio files
-//
-// Change this list according to the methods you want to show.
-// ------------------------------------------------------------
 
 const methods = [
     {
@@ -25,55 +9,46 @@ const methods = [
         name: "Normal Speech",
         category: "reference"
     },
-
     {
         file: "lombard.wav",
         name: "Lombard Speech",
         category: "reference"
     },
-
     {
         file: "cyclegan.wav",
         name: "CycleGAN",
         category: "baseline"
     },
-
     {
         file: "stargan.wav",
         name: "StarGAN",
         category: "baseline"
     },
-
     {
         file: "pgd_n2l.wav",
         name: "PGD-N2L",
         category: "baseline"
     },
-
     {
         file: "streamvc.wav",
         name: "StreamVC",
         category: "baseline"
     },
-
     {
         file: "meanvc.wav",
         name: "MeanVC",
         category: "baseline"
     },
-
     {
         file: "meanvc_p.wav",
-        name: "MeanVC-P",
+        name: "MeanVC-Pretrained",
         category: "baseline"
     },
-
     {
         file: "meanvc2_p.wav",
-        name: "MeanVC2-P",
+        name: "MeanVC2-Pretrained",
         category: "baseline"
     },
-
     {
         file: "streamn2l.wav",
         name: "StreamN2L",
@@ -82,11 +57,15 @@ const methods = [
 ];
 
 
-// ------------------------------------------------------------
-// SNR configuration
-// ------------------------------------------------------------
+/* =========================================================
+   Only two listening conditions are provided:
+   Clean and SNR = -10 dB
+
+   Default condition: SNR = -10 dB
+========================================================= */
 
 const snrOptions = {
+
     clean: {
         label: "Clean / No Noise",
         folder: null
@@ -95,456 +74,219 @@ const snrOptions = {
     "-10": {
         label: "SNR = −10 dB",
         folder: "snr_-10dB"
-    },
-
-    "-7.5": {
-        label: "SNR = −7.5 dB",
-        folder: "snr_-7.5dB"
-    },
-
-    "-5": {
-        label: "SNR = −5 dB",
-        folder: "snr_-5dB"
-    },
-
-    "-2.5": {
-        label: "SNR = −2.5 dB",
-        folder: "snr_-2.5dB"
-    },
-
-    "0": {
-        label: "SNR = 0 dB",
-        folder: "snr_0dB"
     }
+
 };
 
 
-// ------------------------------------------------------------
-// Current SNR
-// ------------------------------------------------------------
+/* =========================================================
+   Get audio path
+========================================================= */
 
-let currentSNR = "clean";
+function getAudioPath(example, filename) {
+
+    const snr = window.currentSNR || "-10";
+    const option = snrOptions[snr];
+
+    if (!option || option.folder === null) {
+        return `audio/${example}/${filename}`;
+    }
+
+    return `audio/${example}/${option.folder}/${filename}`;
+}
 
 
-// ------------------------------------------------------------
-// Generate examples
-// ------------------------------------------------------------
+/* =========================================================
+   Render examples
+========================================================= */
 
 function renderExamples() {
 
-    const container =
-        document.getElementById(
-            "examples-container"
-        );
+    const container = document.getElementById(
+        "examples-container"
+    );
 
     container.innerHTML = "";
 
-    examples.forEach(
-        (example, index) => {
+    examples.forEach((example, index) => {
 
-            const exampleCard =
-                createExampleCard(
-                    example,
-                    index + 1
-                );
+        const exampleCard = document.createElement("div");
 
-            container.appendChild(
-                exampleCard
-            );
-        }
-    );
+        exampleCard.className = "example-card";
 
-    checkMissingAudio();
-}
+        exampleCard.innerHTML = `
+            <div class="example-header">
+                <div class="example-number">
+                    Example ${index + 1}
+                </div>
+            </div>
 
+            <div class="audio-list"></div>
+        `;
 
-// ------------------------------------------------------------
-// Create one example card
-// ------------------------------------------------------------
+        const audioList =
+            exampleCard.querySelector(".audio-list");
 
-function createExampleCard(
-    example,
-    number
-) {
 
-    const card =
-        document.createElement(
-            "div"
-        );
+        methods.forEach(method => {
 
-    card.className =
-        "example-card";
+            const audioPath =
+                getAudioPath(example, method.file);
 
+            const audioItem =
+                document.createElement("div");
 
-    // --------------------------------------------------------
-    // Header
-    // --------------------------------------------------------
+            audioItem.className =
+                `audio-item ${method.category}`;
 
-    const header =
-        document.createElement(
-            "div"
-        );
+            audioItem.innerHTML = `
+                <div class="audio-info">
+                    <div class="audio-name">
+                        ${method.name}
+                    </div>
+                </div>
 
-    header.className =
-        "example-header";
+                <audio controls preload="none">
+                    <source
+                        src="${audioPath}"
+                        type="audio/wav">
+                </audio>
+            `;
 
+            const audio =
+                audioItem.querySelector("audio");
 
-    const title =
-        document.createElement(
-            "div"
-        );
+            audio.addEventListener("play", () => {
 
-    title.className =
-        "example-title";
+                document
+                    .querySelectorAll("audio")
+                    .forEach(other => {
 
-    title.innerHTML =
-        `<span class="example-number">
-            Example ${number}
-         </span>`;
-
-
-    const condition =
-        document.createElement(
-            "div"
-        );
-
-    condition.className =
-        "example-condition";
-
-    condition.textContent =
-        snrOptions[currentSNR].label;
-
-
-    header.appendChild(title);
-    header.appendChild(condition);
-
-
-    // --------------------------------------------------------
-    // Audio list
-    // --------------------------------------------------------
-
-    const audioList =
-        document.createElement(
-            "div"
-        );
-
-    audioList.className =
-        "audio-list";
-
-
-    methods.forEach(
-        method => {
-
-            const item =
-                createAudioItem(
-                    example,
-                    method
-                );
-
-            audioList.appendChild(
-                item
-            );
-        }
-    );
-
-
-    card.appendChild(header);
-    card.appendChild(audioList);
-
-    return card;
-}
-
-
-// ------------------------------------------------------------
-// Create audio item
-// ------------------------------------------------------------
-
-function createAudioItem(
-    example,
-    method
-) {
-
-    const item =
-        document.createElement(
-            "div"
-        );
-
-    item.className =
-        `audio-item ${method.category}`;
-
-
-    // --------------------------------------------------------
-    // Method name
-    // --------------------------------------------------------
-
-    const info =
-        document.createElement(
-            "div"
-        );
-
-    info.className =
-        "audio-info";
-
-
-    const name =
-        document.createElement(
-            "div"
-        );
-
-    name.className =
-        "audio-name";
-
-    name.textContent =
-        method.name;
-
-
-    const category =
-        document.createElement(
-            "div"
-        );
-
-    category.className =
-        "audio-category";
-
-    if (method.category === "ours") {
-
-        category.textContent =
-            "Ours";
-
-    } else if (
-        method.category === "reference"
-    ) {
-
-        category.textContent =
-            "Reference";
-
-    } else {
-
-        category.textContent =
-            "Baseline";
-    }
-
-
-    info.appendChild(name);
-    info.appendChild(category);
-
-
-    // --------------------------------------------------------
-    // Audio
-    // --------------------------------------------------------
-
-    const audio =
-        document.createElement(
-            "audio"
-        );
-
-    audio.controls = true;
-
-    audio.preload = "none";
-
-    audio.dataset.filename =
-        method.file;
-
-    audio.src =
-        getAudioPath(
-            example,
-            method.file
-        );
-
-
-    // --------------------------------------------------------
-    // Stop other audio when this one starts
-    // --------------------------------------------------------
-
-    audio.addEventListener(
-        "play",
-        () => {
-
-            document
-                .querySelectorAll(
-                    "audio"
-                )
-                .forEach(
-                    other => {
-
-                        if (
-                            other !== audio
-                            && !other.paused
-                        ) {
+                        if (other !== audio) {
                             other.pause();
                         }
 
-                    }
+                    });
+
+            });
+
+
+            audio.addEventListener("error", () => {
+
+                audioItem.classList.add(
+                    "audio-missing"
                 );
 
-        }
-    );
+            });
 
 
-    item.appendChild(info);
-    item.appendChild(audio);
+            audioList.appendChild(audioItem);
 
-    return item;
+        });
+
+
+        container.appendChild(exampleCard);
+
+    });
+
 }
 
 
-// ------------------------------------------------------------
-// Generate audio path
-// ------------------------------------------------------------
+/* =========================================================
+   SNR selector
+========================================================= */
 
-function getAudioPath(
-    example,
-    filename
-) {
+function updateSNR(snr) {
 
-    if (currentSNR === "clean") {
-
-        return `audio/${example}/${filename}`;
-
+    if (!snrOptions[snr]) {
+        return;
     }
 
-    const folder =
-        snrOptions[currentSNR].folder;
-
-    return `audio/${example}/${folder}/${filename}`;
-}
+    window.currentSNR = snr;
 
 
-// ------------------------------------------------------------
-// Change SNR
-// ------------------------------------------------------------
-
-function changeSNR(
-    snr
-) {
-
-    // --------------------------------------------------------
-    // Stop all audio
-    // --------------------------------------------------------
+    /* Update button state */
 
     document
-        .querySelectorAll(
-            "audio"
-        )
-        .forEach(
-            audio => {
+        .querySelectorAll(".snr-button")
+        .forEach(button => {
 
-                audio.pause();
-                audio.currentTime = 0;
+            button.classList.toggle(
+                "active",
+                button.dataset.snr === snr
+            );
 
-            }
-        );
+        });
 
 
-    currentSNR = snr;
+    /* Update current condition */
 
+    const currentSNR =
+        document.getElementById("current-snr");
 
-    // --------------------------------------------------------
-    // Update current condition
-    // --------------------------------------------------------
-
-    document
-        .getElementById(
-            "current-snr"
-        )
-        .textContent =
+    currentSNR.textContent =
         snrOptions[snr].label;
 
 
-    // --------------------------------------------------------
-    // Re-render examples
-    // --------------------------------------------------------
+    /* Stop currently playing audio */
+
+    document
+        .querySelectorAll("audio")
+        .forEach(audio => {
+
+            audio.pause();
+            audio.currentTime = 0;
+
+        });
+
+
+    /* Re-render audio */
 
     renderExamples();
 
-
-    // --------------------------------------------------------
-    // Update button states
-    // --------------------------------------------------------
-
-    document
-        .querySelectorAll(
-            ".snr-button"
-        )
-        .forEach(
-            button => {
-
-                button.classList.toggle(
-                    "active",
-                    button.dataset.snr === snr
-                );
-
-            }
-        );
 }
 
 
-// ------------------------------------------------------------
-// Check missing audio
-// ------------------------------------------------------------
+/* =========================================================
+   Initialize
+========================================================= */
 
-function checkMissingAudio() {
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-    document
-        .querySelectorAll(
-            "audio"
-        )
-        .forEach(
-            audio => {
+        /*
+         * Important:
+         * Start directly from -10 dB.
+         * Clean speech is NOT the default condition.
+         */
 
-                audio.addEventListener(
-                    "error",
+        window.currentSNR = "-10";
+
+
+        /* Bind SNR buttons */
+
+        document
+            .querySelectorAll(".snr-button")
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
                     () => {
 
-                        const item =
-                            audio.closest(
-                                ".audio-item"
-                            );
-
-                        if (item) {
-
-                            item.classList.add(
-                                "audio-missing"
-                            );
-
-                        }
+                        updateSNR(
+                            button.dataset.snr
+                        );
 
                     }
                 );
 
-            }
-        );
-}
+            });
 
 
-// ------------------------------------------------------------
-// SNR button events
-// ------------------------------------------------------------
+        /* Initial rendering */
 
-document
-    .querySelectorAll(
-        ".snr-button"
-    )
-    .forEach(
-        button => {
+        updateSNR("-10");
 
-            button.addEventListener(
-                "click",
-                () => {
-
-                    changeSNR(
-                        button.dataset.snr
-                    );
-
-                }
-            );
-
-        }
-    );
-
-
-// ------------------------------------------------------------
-// Initial render
-// ------------------------------------------------------------
-
-renderExamples();
+    }
+);
