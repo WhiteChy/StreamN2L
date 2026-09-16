@@ -1,4 +1,55 @@
 /* ============================================================
+   Navigation
+============================================================ */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.nav-container {
+    max-width: 1050px;
+    margin: 0 auto;
+
+    padding: 14px 24px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo {
+    font-size: 18px;
+    font-weight: 750;
+    color: #111827;
+    letter-spacing: -0.02em;
+}
+
+.nav-links {
+    display: flex;
+    gap: 22px;
+}
+
+.nav-links a {
+    font-size: 14px;
+    font-weight: 500;
+
+    color: #4b5563;
+    text-decoration: none;
+
+    transition: color 0.15s ease;
+}
+
+.nav-links a:hover {
+    color: #111827;
+}
+/* ============================================================
    Global
 ============================================================ */
 
@@ -207,58 +258,6 @@ main {
         0 0 14px;
 }
 
-/* ============================================================
-   Navigation
-============================================================ */
-
-.navbar {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(10px);
-
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.nav-container {
-    max-width: 1050px;
-    margin: auto;
-
-    padding: 14px 24px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nav-logo {
-    font-size: 18px;
-    font-weight: 750;
-    color: #111827;
-
-    letter-spacing: -0.02em;
-}
-
-.nav-links {
-    display: flex;
-    gap: 22px;
-}
-
-.nav-links a {
-    font-size: 14px;
-    font-weight: 500;
-
-    color: #4b5563;
-    text-decoration: none;
-
-    transition: color 0.15s ease;
-}
-
-.nav-links a:hover {
-    color: #111827;
-}
 
 /* ============================================================
    Container
