@@ -249,7 +249,9 @@ function renderExamples() {
                         <div class="audio-name">
                             ${method.name}
                         </div>
-
+                        <div class="audio-category">
+                            ${method.category}
+                        </div>
                     </div>
 
 
