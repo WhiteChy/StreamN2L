@@ -322,35 +322,31 @@ function createAudioItem(method, exampleIndex) {
 
 function createTranscript(exampleIndex) {
 
+    if (window.currentSNR !== "clean") {
+        return null;
+    }
+
+    const text = transcripts[exampleIndex];
+
+    if (!text) {
+        return null;
+    }
+
     const transcript = document.createElement("div");
 
     transcript.className = "example-transcript";
+    transcript.dataset.cleanTranscript = "true";
 
-    const option = snrOptions[window.currentSNR];
+    const chinese = document.createElement("div");
+    chinese.className = "transcript-chinese";
+    chinese.textContent = text.chinese;
 
-    if (option && option.folder === null) {
+    const english = document.createElement("div");
+    english.className = "transcript-english";
+    english.textContent = text.english;
 
-        const text = transcripts[exampleIndex];
-
-        if (text) {
-            const chinese = document.createElement("div");
-            chinese.className = "transcript-chinese";
-            chinese.textContent = text.chinese;
-
-            const english = document.createElement("div");
-            english.className = "transcript-english";
-            english.textContent = text.english;
-
-            transcript.appendChild(chinese);
-            transcript.appendChild(english);
-        } else {
-            transcript.style.display = "none";
-        }
-
-    } else {
-
-        transcript.style.display = "none";
-    }
+    transcript.appendChild(chinese);
+    transcript.appendChild(english);
 
     return transcript;
 }
@@ -400,7 +396,9 @@ function renderExamples() {
 
         const transcript = createTranscript(exampleIndex);
 
-        exampleBlock.appendChild(transcript);
+        if (transcript) {
+            exampleBlock.appendChild(transcript);
+        }
 
         container.appendChild(exampleBlock);
 
