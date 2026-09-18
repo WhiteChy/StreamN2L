@@ -262,8 +262,14 @@ function getAblationReferenceAudioPath(type, exampleIndex) {
 // ------------------------------------------------------------
 
 const transcripts = {
-    1: "",
-    2: ""
+    1: {
+        chinese: "对应文本: 中国人非常友善和热情",
+        english: "Corresponding text: Chinese people are very friendly and warm-hearted."
+    },
+    2: {
+        chinese: "对应文本: 中国银行卡产业近年来发展迅速。",
+        english: "Corresponding text: China's bank card industry has developed rapidly in recent years."
+    }
 };
 
 
@@ -318,7 +324,7 @@ function createTranscript(exampleIndex) {
 
     const transcript = document.createElement("div");
 
-    transcript.className = "transcript";
+    transcript.className = "example-transcript";
 
     const option = snrOptions[window.currentSNR];
 
@@ -327,7 +333,16 @@ function createTranscript(exampleIndex) {
         const text = transcripts[exampleIndex];
 
         if (text) {
-            transcript.textContent = text;
+            const chinese = document.createElement("div");
+            chinese.className = "transcript-chinese";
+            chinese.textContent = text.chinese;
+
+            const english = document.createElement("div");
+            english.className = "transcript-english";
+            english.textContent = text.english;
+
+            transcript.appendChild(chinese);
+            transcript.appendChild(english);
         } else {
             transcript.style.display = "none";
         }
@@ -372,10 +387,6 @@ function renderExamples() {
 
         exampleBlock.appendChild(title);
 
-        const transcript = createTranscript(exampleIndex);
-
-        exampleBlock.appendChild(transcript);
-
         methods.forEach(method => {
 
             const item = createAudioItem(
@@ -386,6 +397,10 @@ function renderExamples() {
             exampleBlock.appendChild(item);
 
         });
+
+        const transcript = createTranscript(exampleIndex);
+
+        exampleBlock.appendChild(transcript);
 
         container.appendChild(exampleBlock);
 
@@ -548,7 +563,7 @@ function renderAblation() {
 
 
         // ----------------------------------------------------
-        // 3. Ground Truth Lombard Speech
+        // 3. Lombard Speech
         // ----------------------------------------------------
 
         const lombardSrc =
@@ -559,7 +574,7 @@ function renderAblation() {
 
         addAblationAudioItem(
             exampleBlock,
-            "Ground Truth Lombard Speech (L80)",
+            "Lombard speech",
             lombardSrc,
             "reference"
         );
