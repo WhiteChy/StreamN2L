@@ -1,60 +1,16 @@
 /* ============================================================
-   Navigation
-============================================================ */
+   StreamN2L Demo
+   ============================================================ */
 
-.navbar {
-    position: sticky;
-    top: 0;
-    z-index: 100;
 
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.nav-container {
-    max-width: 1050px;
-    margin: 0 auto;
-
-    padding: 14px 24px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nav-logo {
-    font-size: 18px;
-    font-weight: 750;
-    color: #111827;
-    letter-spacing: -0.02em;
-}
-
-.nav-links {
-    display: flex;
-    gap: 22px;
-}
-
-.nav-links a {
-    font-size: 14px;
-    font-weight: 500;
-
-    color: #4b5563;
-    text-decoration: none;
-
-    transition: color 0.15s ease;
-}
-
-.nav-links a:hover {
-    color: #111827;
-}
 /* ============================================================
    Global
-============================================================ */
+   ============================================================ */
 
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 html {
@@ -62,7 +18,6 @@ html {
 }
 
 body {
-    margin: 0;
     font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -73,797 +28,818 @@ body {
         sans-serif;
 
     color: #1f2937;
-    background: #f7f8fa;
+    background: #ffffff;
 
-    line-height: 1.6;
+    line-height: 1.65;
 }
 
-
-/* ============================================================
-   Hero
-============================================================ */
-
-.hero {
-    background:
-        linear-gradient(
-            135deg,
-            #111827 0%,
-            #1f2937 55%,
-            #374151 100%
-        );
-
-    color: white;
-
-    padding:
-        90px 24px
-        85px;
-}
-
-
-.hero-content {
-    max-width: 1050px;
-    margin: auto;
-}
-
-
-.project-label {
-    font-size: 14px;
-    font-weight: 600;
-
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-
-    opacity: 0.65;
-
-    margin-bottom: 16px;
-}
-
-
-.hero h1 {
-    font-size: 64px;
-    line-height: 1;
-
-    margin:
-        0 0 16px;
-
-    font-weight: 750;
-
-    letter-spacing: -0.04em;
-}
-
-
-.hero h2 {
-    margin: 0;
-
-    font-size: 27px;
-    font-weight: 450;
-
-    line-height: 1.3;
-
-    color: #e5e7eb;
-}
-
-
-.hero-description {
-    max-width: 760px;
-
-    margin:
-        26px 0 30px;
-
-    font-size: 17px;
-
-    color: #d1d5db;
-}
-
-
-.hero-buttons {
-    display: flex;
-    gap: 12px;
-}
-
-
-.button {
-    display: inline-block;
-
-    padding:
-        10px 19px;
-
-    border-radius: 7px;
-
+a {
+    color: inherit;
     text-decoration: none;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    transition:
-        transform 0.15s ease,
-        background 0.15s ease;
 }
 
-
-.button:hover {
-    transform: translateY(-1px);
-}
-
-
-.button.primary {
-    background: white;
-    color: #111827;
-}
-
-
-.button.secondary {
-    border: 1px solid #6b7280;
-    color: white;
-}
-
-
-/* ============================================================
-   Main
-============================================================ */
-
-main {
-    max-width: 1050px;
-
-    margin: auto;
-
-    padding:
-        65px 24px
-        90px;
-}
-
-
-.section {
-    margin-bottom: 65px;
-}
-
-
-.section-title {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    margin-bottom: 25px;
-
-    font-size: 22px;
-    font-weight: 700;
-
-    color: #111827;
-}
-
-
-.section-title span {
-    font-size: 13px;
-
-    color: #6b7280;
-
-    font-weight: 600;
-
-    letter-spacing: 0.08em;
-}
-
-
-.intro {
-    max-width: 850px;
-}
-
-
-.intro p,
-.notes p {
-    font-size: 16px;
-
-    color: #4b5563;
-
-    margin:
-        0 0 14px;
+button,
+audio {
+    font-family: inherit;
 }
 
 
 /* ============================================================
    Container
-============================================================ */
+   ============================================================ */
 
 .container {
-    max-width: 1050px;
-    margin: auto;
-
-    padding: 65px 24px 90px;
+    width: min(1120px, calc(100% - 40px));
+    margin: 0 auto;
 }
 
+
 /* ============================================================
-   Hero badge
-============================================================ */
+   Navigation
+   ============================================================ */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    width: 100%;
+
+    background: rgba(255, 255, 255, 0.94);
+
+    border-bottom: 1px solid #e5e7eb;
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.nav-container {
+    width: min(1120px, calc(100% - 40px));
+    height: 68px;
+
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-logo {
+    font-size: 20px;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+
+    color: #111827;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.nav-links a {
+    font-size: 14px;
+    font-weight: 500;
+
+    color: #4b5563;
+
+    transition:
+        color 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: #111827;
+}
+
+
+/* ============================================================
+   Hero
+   ============================================================ */
+
+.hero {
+    padding: 110px 0 105px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #f8fafc 0%,
+            #ffffff 100%
+        );
+
+    border-bottom: 1px solid #eef0f2;
+}
+
+.hero-content {
+    text-align: center;
+}
 
 .hero-badge {
     display: inline-block;
 
-    font-size: 13px;
-    font-weight: 600;
+    margin-bottom: 20px;
+    padding: 6px 13px;
 
-    letter-spacing: 0.12em;
+    border: 1px solid #dbe3ea;
+    border-radius: 999px;
+
+    background: #ffffff;
+
+    color: #64748b;
+
+    font-size: 12px;
+    font-weight: 650;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
-
-    opacity: 0.65;
-
-    margin-bottom: 16px;
 }
 
-/* ============================================================
-   Button variants (修复选择器不匹配)
-============================================================ */
-
-.button-primary {
-    background: white;
-    color: #111827;
-}
-
-.button-secondary {
-    border: 1px solid #6b7280;
-    color: white;
-}
-
-/* ============================================================
-   About
-============================================================ */
-
-.about-content {
-    max-width: 850px;
-}
-
-.about-content p {
-    font-size: 16px;
-    color: #4b5563;
-    margin: 0 0 14px;
-}
-
-/* ============================================================
-   Ablation panel
-============================================================ */
-
-.ablation-intro {
-    font-size: 16px;
-    color: #4b5563;
-    margin: 0 0 22px;
-    max-width: 850px;
-}
-
-.ablation-noise-panel {
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 26px;
-    margin-bottom: 35px;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.035);
-}
-
-.noise-description {
-    margin-bottom: 4px;
-}
-
-/* ============================================================
-   Footer
-============================================================ */
-
-.footer-content {
-    max-width: 1050px;
-    margin: auto;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-}
-
-.footer-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: #111827;
-}
-
-.footer-text {
-    font-size: 13px;
-    color: #9ca3af;
-}
-
-.footer-content a {
-    margin-top: 6px;
-    font-size: 13px;
-    color: #4b5563;
-    text-decoration: none;
-}
-
-.footer-content a:hover {
-    color: #111827;
-    text-decoration: underline;
-}
-
-
-/* ============================================================
-   Noise panel
-============================================================ */
-
-.noise-panel {
-
-    background: white;
-
-    border:
-        1px solid #e5e7eb;
-
-    border-radius: 12px;
-
-    padding: 26px;
-
-    margin-bottom: 35px;
-
-    box-shadow:
-        0 4px 18px
-        rgba(0, 0, 0, 0.035);
-}
-
-
-.noise-heading {
-    font-size: 19px;
-
-    font-weight: 700;
+.hero h1 {
+    margin-bottom: 12px;
 
     color: #111827;
+
+    font-size: clamp(48px, 7vw, 76px);
+    line-height: 1.05;
+    letter-spacing: -0.045em;
+    font-weight: 800;
 }
 
+.hero-subtitle {
+    margin-bottom: 22px;
 
-.noise-subheading {
-    font-size: 14px;
+    color: #374151;
+
+    font-size: clamp(20px, 3vw, 28px);
+    line-height: 1.3;
+    font-weight: 500;
+}
+
+.hero-description {
+    width: min(720px, 100%);
+    margin: 0 auto 32px;
 
     color: #6b7280;
 
-    margin-top: 3px;
+    font-size: 16px;
+    line-height: 1.75;
 }
 
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-.snr-selector {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 10px;
-
-    margin-top: 22px;
+    gap: 12px;
 }
 
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-.snr-button {
+    min-width: 145px;
 
-    border:
-        1px solid #d1d5db;
-
-    background: #f9fafb;
+    padding: 11px 20px;
 
     border-radius: 8px;
 
-    padding:
-        13px 8px;
+    font-size: 14px;
+    font-weight: 650;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    background: #111827;
+    color: #ffffff;
+
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.btn-primary:hover {
+    background: #1f2937;
+
+    box-shadow:
+        0 5px 14px rgba(0, 0, 0, 0.12);
+}
+
+.btn-secondary {
+    border: 1px solid #d1d5db;
+
+    background: #ffffff;
+    color: #374151;
+}
+
+.btn-secondary:hover {
+    background: #f9fafb;
+}
+
+
+/* ============================================================
+   Sections
+   ============================================================ */
+
+.section {
+    padding: 90px 0;
+}
+
+.section-alt {
+    background: #f8fafc;
+
+    border-top: 1px solid #eef0f2;
+    border-bottom: 1px solid #eef0f2;
+}
+
+.section-header {
+    margin-bottom: 42px;
+
+    text-align: center;
+}
+
+.section-label {
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: #64748b;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.section-header h2 {
+    margin-bottom: 12px;
+
+    color: #111827;
+
+    font-size: clamp(30px, 4vw, 42px);
+    line-height: 1.2;
+
+    letter-spacing: -0.025em;
+}
+
+.section-header p {
+    width: min(700px, 100%);
+    margin: 0 auto;
+
+    color: #6b7280;
+
+    font-size: 15px;
+}
+
+
+/* ============================================================
+   About
+   ============================================================ */
+
+.about-content {
+    width: min(800px, 100%);
+    margin: 0 auto;
+}
+
+.about-content p {
+    margin-bottom: 20px;
+
+    color: #4b5563;
+
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+.about-content p:last-child {
+    margin-bottom: 0;
+}
+
+
+/* ============================================================
+   SNR Control
+   ============================================================ */
+
+.snr-control {
+    width: min(850px, 100%);
+
+    margin: 0 auto 42px;
+
+    padding: 22px 24px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.snr-title {
+    margin-bottom: 14px;
+
+    color: #374151;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    text-align: center;
+}
+
+.snr-selector {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 10px;
+}
+
+.snr-btn {
+    min-height: 44px;
+
+    padding: 10px 14px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #4b5563;
+
+    font-size: 14px;
+    font-weight: 600;
 
     cursor: pointer;
 
     transition:
-        all 0.15s ease;
-
-    color: #374151;
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.15s ease;
 }
 
-
-.snr-button:hover {
-
+.snr-btn:hover {
     border-color: #9ca3af;
 
-    background: #f3f4f6;
+    background: #f9fafb;
+
+    color: #111827;
 }
 
+.snr-btn:active {
+    transform: translateY(1px);
+}
 
-.snr-button.active {
+.snr-btn.active {
+    border-color: #111827;
 
     background: #111827;
 
-    border-color: #111827;
-
-    color: white;
-
-    box-shadow:
-        0 3px 10px
-        rgba(0, 0, 0, 0.15);
+    color: #ffffff;
 }
 
+.snr-current {
+    margin-top: 14px;
 
-.snr-value {
+    color: #9ca3af;
 
-    display: block;
+    font-size: 12px;
 
-    font-size: 16px;
-
-    font-weight: 700;
+    text-align: center;
 }
 
+.snr-current span {
+    color: #4b5563;
 
-.snr-label {
-
-    display: block;
-
-    margin-top: 2px;
-
-    font-size: 11px;
-
-    opacity: 0.65;
-}
-
-
-.current-condition {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    margin-top: 22px;
-
-    padding-top: 17px;
-
-    border-top:
-        1px solid #e5e7eb;
-
-    font-size: 14px;
-
-    color: #6b7280;
-}
-
-
-.current-condition strong {
-
-    color: #111827;
-
-    font-weight: 700;
+    font-weight: 650;
 }
 
 
 /* ============================================================
-   Example card
-============================================================ */
+   Examples
+   ============================================================ */
 
-.example-card {
+.examples-container {
+    width: min(900px, 100%);
+    margin: 0 auto;
+}
 
-    background: white;
+.example-block {
+    margin-bottom: 42px;
 
-    border:
-        1px solid #e5e7eb;
+    padding: 26px;
 
-    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
 
-    margin-bottom: 25px;
-
-    overflow: hidden;
+    background: #ffffff;
 
     box-shadow:
-        0 3px 14px
-        rgba(0, 0, 0, 0.025);
+        0 2px 10px rgba(15, 23, 42, 0.035);
 }
 
-
-.example-header {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    padding:
-        19px 24px;
-
-    border-bottom:
-        1px solid #e5e7eb;
-
-    background: #fafafa;
+.example-block:last-child {
+    margin-bottom: 0;
 }
-
 
 .example-title {
-
-    font-size: 17px;
-
-    font-weight: 700;
+    margin-bottom: 20px;
 
     color: #111827;
-}
 
-
-.example-number {
+    font-size: 19px;
+    font-weight: 700;
 
     letter-spacing: -0.01em;
 }
 
 
-.example-condition {
+/* ============================================================
+   Transcript
+   ============================================================ */
 
-    font-size: 13px;
+.transcript {
+    margin: -8px 0 20px;
 
-    font-weight: 600;
+    padding: 12px 16px;
+
+    border-left: 3px solid #d1d5db;
+
+    background: #f9fafb;
 
     color: #6b7280;
+
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 
 /* ============================================================
-   Audio list
-============================================================ */
-
-.audio-list {
-
-    padding:
-        8px 24px
-        15px;
-}
-
+   Audio Item
+   ============================================================ */
 
 .audio-item {
-
     display: grid;
 
     grid-template-columns:
-        190px 1fr;
-
-    gap: 20px;
+        220px minmax(0, 1fr);
 
     align-items: center;
 
-    padding:
-        13px 0;
+    gap: 18px;
 
-    border-bottom:
-        1px solid #f0f1f3;
+    min-height: 64px;
+
+    padding: 11px 14px;
+
+    border: 1px solid transparent;
+    border-radius: 9px;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
 }
 
+.audio-item:hover {
+    background: #f9fafb;
 
-.audio-item:last-child {
-    border-bottom: none;
+    border-color: #f0f1f3;
 }
 
+.audio-name {
+    color: #4b5563;
 
-.audio-info {
+    font-size: 14px;
+    font-weight: 550;
+
+    line-height: 1.4;
+}
+
+.audio-control {
     min-width: 0;
 }
 
+.audio-control audio {
+    display: block;
 
-.audio-name {
-
-    font-size: 14px;
-
-    font-weight: 600;
-
-    color: #374151;
+    width: 100%;
+    height: 40px;
 }
 
 
-.audio-category {
-
-    margin-top: 2px;
-
-    font-size: 11px;
-
-    text-transform: uppercase;
-
-    letter-spacing: 0.06em;
-
-    color: #9ca3af;
-}
-
-
-/* ------------------------------------------------------------
-   Ours
------------------------------------------------------------- */
+/* ============================================================
+   StreamN2L Highlight
+   ============================================================ */
 
 .audio-item.ours {
+    margin-top: 3px;
+    margin-bottom: 3px;
 
-    margin-left: -10px;
-    margin-right: -10px;
+    border-color: #d1d5db;
 
-    padding-left: 10px;
-    padding-right: 10px;
-
-    border-radius: 6px;
-
-    background: #f7f8fa;
+    background: #f3f4f6;
 }
 
+.audio-item.ours:hover {
+    background: #e5e7eb;
+}
 
 .audio-item.ours .audio-name {
-
     color: #111827;
 
     font-weight: 750;
 }
 
 
-/* ------------------------------------------------------------
-   Reference
------------------------------------------------------------- */
+/* ============================================================
+   Reference Audio
+   ============================================================ */
 
-.audio-item.reference .audio-name {
+.audio-item.reference {
+    background: #fafafa;
 
-    color: #4b5563;
+    border-color: #eeeeee;
 }
 
+.audio-item.reference:hover {
+    background: #f5f5f5;
+}
 
-/* ------------------------------------------------------------
-   Audio control
------------------------------------------------------------- */
+.audio-item.reference .audio-name {
+    color: #374151;
 
-audio {
-
-    width: 100%;
-
-    height: 38px;
+    font-weight: 650;
 }
 
 
 /* ============================================================
-   Missing audio
-============================================================ */
+   Missing Audio
+   ============================================================ */
 
 .audio-missing {
-
     display: none;
 }
 
 
 /* ============================================================
    Footer
-============================================================ */
+   ============================================================ */
 
-footer {
+.footer {
+    padding: 45px 0;
 
-    border-top:
-        1px solid #e5e7eb;
+    border-top: 1px solid #e5e7eb;
 
-    padding:
-        30px 24px;
+    background: #ffffff;
+}
 
-    text-align: center;
+.footer-content {
+    display: flex;
 
-    font-size: 13px;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+}
+
+.footer strong {
+    color: #111827;
+
+    font-size: 15px;
+}
+
+.footer p {
+    margin-top: 5px;
 
     color: #9ca3af;
 
-    background: white;
+    font-size: 13px;
 }
 
-
-footer strong {
-
+.footer-links a {
     color: #6b7280;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.footer-links a:hover {
+    color: #111827;
 }
 
 
 /* ============================================================
-   Responsive
-============================================================ */
+   Focus states
+   ============================================================ */
 
-@media (
-    max-width: 800px
-) {
+button:focus-visible,
+a:focus-visible {
+    outline: 2px solid #6b7280;
+    outline-offset: 3px;
+}
 
-    .hero {
-        padding:
-            65px 20px;
+
+/* ============================================================
+   Responsive: Tablet
+   ============================================================ */
+
+@media (max-width: 800px) {
+
+    .container {
+        width: min(100% - 32px, 700px);
     }
 
+    .nav-container {
+        width: min(100% - 32px, 700px);
+    }
+
+    .nav-container {
+        height: 62px;
+    }
+
+    .nav-links {
+        gap: 18px;
+    }
+
+    .nav-links a {
+        font-size: 13px;
+    }
+
+    .hero {
+        padding: 85px 0 80px;
+    }
+
+    .section {
+        padding: 70px 0;
+    }
+
+    .snr-selector {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+    .example-block {
+        padding: 20px;
+    }
+
+    .audio-item {
+        grid-template-columns:
+            180px minmax(0, 1fr);
+
+        gap: 14px;
+    }
+
+}
+
+
+/* ============================================================
+   Responsive: Mobile
+   ============================================================ */
+
+@media (max-width: 600px) {
+
+    .container {
+        width: calc(100% - 28px);
+    }
+
+    .nav-container {
+        width: calc(100% - 28px);
+    }
+
+    .nav-logo {
+        font-size: 18px;
+    }
+
+    .nav-links {
+        gap: 12px;
+    }
+
+    .nav-links a {
+        font-size: 12px;
+    }
+
+    .nav-links a:nth-child(3) {
+        display: none;
+    }
+
+    .hero {
+        padding: 70px 0 65px;
+    }
 
     .hero h1 {
         font-size: 48px;
     }
 
-
-    .hero h2 {
-        font-size: 22px;
+    .hero-subtitle {
+        font-size: 19px;
     }
 
+    .hero-description {
+        font-size: 14px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+
+        width: 100%;
+    }
+
+    .btn {
+        width: min(260px, 100%);
+    }
+
+    .section {
+        padding: 60px 0;
+    }
+
+    .section-header {
+        margin-bottom: 30px;
+    }
+
+    .section-header h2 {
+        font-size: 30px;
+    }
+
+    .about-content p {
+        font-size: 15px;
+    }
+
+    .snr-control {
+        padding: 18px;
+    }
 
     .snr-selector {
-
-        grid-template-columns:
-            repeat(3, 1fr);
+        grid-template-columns: 1fr;
     }
 
+    .snr-btn {
+        min-height: 42px;
+    }
+
+    .example-block {
+        padding: 16px;
+
+        border-radius: 11px;
+    }
+
+    .example-title {
+        font-size: 18px;
+    }
 
     .audio-item {
+        grid-template-columns: 1fr;
 
-        grid-template-columns:
-            1fr;
+        gap: 7px;
 
-        gap: 8px;
+        padding: 12px 10px;
+    }
+
+    .audio-name {
+        font-size: 13px;
+    }
+
+    .audio-control audio {
+        height: 38px;
+    }
+
+    .footer-content {
+        flex-direction: column;
+
+        align-items: flex-start;
     }
 
 }
 
 
-@media (
-    max-width: 500px
-) {
+/* ============================================================
+   Responsive: Small Mobile
+   ============================================================ */
 
-    main {
-        padding:
-            45px 16px
-            60px;
+@media (max-width: 400px) {
+
+    .nav-links {
+        gap: 9px;
     }
 
-
-    .hero {
-        padding:
-            55px 18px;
+    .nav-links a {
+        font-size: 11px;
     }
-
 
     .hero h1 {
         font-size: 42px;
     }
 
-
-    .snr-selector {
-
-        grid-template-columns:
-            repeat(2, 1fr);
+    .hero-subtitle {
+        font-size: 18px;
     }
 
-
-    .example-header {
-
-        align-items: flex-start;
-
-        flex-direction: column;
-
-        gap: 5px;
-    }
-
-
-    .audio-list {
-
-        padding-left: 16px;
-        padding-right: 16px;
-    }
-
-}
-/* ============================================================
-   Transcript
-============================================================ */
-
-.example-transcript {
-    padding: 16px 24px 20px;
-    border-top: 1px solid #e5e7eb;
-    background: #fafafa;
-}
-
-.transcript-chinese {
-    font-size: 13px;
-    color: #6b7280;
-    line-height: 1.5;
-}
-
-.transcript-english {
-    font-size: 15px;
-    font-weight: 600;
-    color: #111827;
-    margin-bottom: 6px;
-
-}
-
-/* ============================================================
-   Ablation references
-   ============================================================ */
-
-.audio-item.reference {
-    background: #fafafa;
-}
-
-.audio-item.reference .audio-name {
-    font-weight: 650;
 }

@@ -11,10 +11,10 @@
 
     <meta
         name="description"
-        content="StreamN2L: Streaming Normal-to-Lombard Speech Conversion"
+        content="StreamN2L: A Low-latency Streaming Normal-to-Lombard Speech Conversion"
     >
 
-    <title>StreamN2L</title>
+    <title>StreamN2L | Streaming Normal-to-Lombard Speech Conversion</title>
 
     <link
         rel="stylesheet"
@@ -22,19 +22,24 @@
     >
 </head>
 
+
 <body>
 
-    <!-- =====================================================
+    <!-- ======================================================
          Navigation
-    ====================================================== -->
+         ====================================================== -->
 
     <nav class="navbar">
 
         <div class="nav-container">
 
-            <div class="nav-logo">
+            <a
+                href="#top"
+                class="nav-logo"
+            >
                 StreamN2L
-            </div>
+            </a>
+
 
             <div class="nav-links">
 
@@ -51,7 +56,7 @@
                 </a>
 
                 <a
-                    href="https://github.com/whitechy/StreamN2L"
+                    href="https://github.com/WhiteChy/StreamN2L"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
@@ -65,46 +70,56 @@
     </nav>
 
 
-    <!-- =====================================================
+    <!-- ======================================================
          Hero
-    ====================================================== -->
+         ====================================================== -->
 
-    <header class="hero">
+    <header
+        id="top"
+        class="hero"
+    >
 
-        <div class="hero-content">
+        <div class="container hero-content">
 
             <div class="hero-badge">
                 Speech Conversion
             </div>
 
+
             <h1>
                 StreamN2L
             </h1>
 
-            <h2>
+
+            <p class="hero-subtitle">
                 Streaming Normal-to-Lombard Speech Conversion
-            </h2>
+            </p>
+
 
             <p class="hero-description">
-                 a low-latency streaming Normal-to-Lombard conversion framework.
+                A low-latency streaming framework for converting
+                normal speech into Lombard speech under noisy
+                communication conditions.
             </p>
+
 
             <div class="hero-buttons">
 
                 <a
                     href="#demo"
-                    class="button button-primary"
+                    class="btn btn-primary"
                 >
                     Listen to Demo
                 </a>
 
+
                 <a
-                    href="https://github.com/whitechy/StreamN2L"
+                    href="https://github.com/WhiteChy/StreamN2L"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="button button-secondary"
+                    class="btn btn-secondary"
                 >
-                    GitHub
+                    View on GitHub
                 </a>
 
             </div>
@@ -114,239 +129,310 @@
     </header>
 
 
-    <!-- =====================================================
-         Main
-    ====================================================== -->
+    <!-- ======================================================
+         Main content
+         ====================================================== -->
 
-    <main class="container">
+    <main>
 
 
-        <!-- =================================================
+        <!-- ==================================================
              About
-        ================================================== -->
+             ================================================== -->
 
         <section
-            class="section"
             id="about"
+            class="section"
         >
 
-            <div class="section-title">
+            <div class="container">
 
-                <span>
-                    01
-                </span>
+                <div class="section-header">
 
-                About the Demo
+                    <span class="section-label">
+                        About
+                    </span>
 
-            </div>
+                    <h2>
+                        StreamN2L
+                    </h2>
 
-            <div class="about-content">
+                </div>
 
-                <p>
-                    StreamN2L performs normal-to-Lombard speech
-                    conversion for noisy communication scenarios.
-                    The following examples compare StreamN2L with
-                    several existing approaches under noise conditions.
-                </p>
 
-                <p>
-                    All speech samples are energy-normalized and mixed with the same
-                    noise to enable a fair comparison of noise robustness.
-                </p>
+                <div class="about-content">
+
+                    <p>
+                        StreamN2L is a low-latency streaming
+                        Normal-to-Lombard speech conversion
+                        framework designed to improve speech
+                        intelligibility in noisy communication
+                        environments.
+                    </p>
+
+
+                    <p>
+                        The system converts normal speech into
+                        Lombard speech while preserving linguistic
+                        content and speaker identity, enabling
+                        dynamic speech enhancement for
+                        latency-sensitive applications.
+                    </p>
+
+
+                    <p>
+                        All speech samples are energy-normalized
+                        and mixed with the same noise to enable a
+                        fair comparison of noise robustness.
+                    </p>
+
+                </div>
 
             </div>
 
         </section>
 
 
-        <!-- =================================================
+        <!-- ==================================================
              Main Demo
-        ================================================== -->
+             ================================================== -->
 
         <section
-            class="section"
             id="demo"
+            class="section section-alt"
         >
 
-            <div class="section-title">
+            <div class="container">
 
-                <span>
-                    02
-                </span>
+                <div class="section-header">
 
-                Comparisons with baselines
-            </div>
-
-
-            <div class="noise-panel">
-
-                <div class="noise-description">
-
-                    <div class="noise-heading">
-                        Select SNR
-                    </div>
-
-                    <div class="noise-subheading">
-We recommend listening to the noisy speech samples sequentially from top to bottom to minimize memory effects on intelligibility evaluation.
-The corresponding text will be displayed for clean speech.
-                    </div>
-
-                </div>
-
-
-                <div class="snr-selector">
-
-                    <button class="snr-button active" data-snr="-10">
-                        <span class="snr-value">−10 dB</span>
-                        <span class="snr-label">Noisy</span>
-                    </button>
-
-                    <button class="snr-button" data-snr="-5">
-                        <span class="snr-value">−5 dB</span>
-                        <span class="snr-label">Noisy</span>
-                    </button>
-
-                    <button class="snr-button" data-snr="clean">
-                        <span class="snr-value">Clean</span>
-                        <span class="snr-label">No Noise</span>
-                    </button>
-
-                </div>
-
-
-                <div class="current-condition">
-
-                    <span>
-                        Current condition:
+                    <span class="section-label">
+                        Demonstration
                     </span>
 
-                    <strong id="current-snr">
-                        SNR = −10 dB
-                    </strong>
+                    <h2>
+                        Speech Conversion Examples
+                    </h2>
+
+                    <p>
+                        Listen to the normal speech, baseline
+                        systems, and StreamN2L under different
+                        noise conditions.
+                    </p>
 
                 </div>
 
+
+                <!-- ==========================================
+                     Main SNR selector
+                     ========================================== -->
+
+                <div class="snr-control">
+
+                    <div class="snr-title">
+                        Noise Condition
+                    </div>
+
+
+                    <div class="snr-selector">
+
+                        <button
+                            type="button"
+                            class="snr-btn active"
+                            data-snr="-10"
+                        >
+                            SNR = −10 dB
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="snr-btn"
+                            data-snr="-5"
+                        >
+                            SNR = −5 dB
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="snr-btn"
+                            data-snr="clean"
+                        >
+                            Clean / No Noise
+                        </button>
+
+                    </div>
+
+
+                    <div class="snr-current">
+                        Current condition:
+                        <span id="current-snr">
+                            SNR = −10 dB
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <!-- ==========================================
+                     Main examples
+                     ========================================== -->
+
+                <div
+                    id="examples-container"
+                    class="examples-container"
+                >
+                    <!-- Generated by script.js -->
+                </div>
+
             </div>
-
-
-            <div id="examples-container"></div>
 
         </section>
 
 
-        <!-- =================================================
+        <!-- ==================================================
              Ablation Study
-        ================================================== -->
+             ================================================== -->
 
         <section
-            class="section"
             id="ablation"
+            class="section"
         >
 
-            <div class="section-title">
+            <div class="container">
 
-                <span>
-                    03
-                </span>
+                <div class="section-header">
 
-                Ablation Study
-
-            </div>
-
-
-            <p class="ablation-intro">
-
-                Audio examples from the ablation study.
-                Different variants remove specific components
-                from the StreamN2L.
-
-            </p>
-
-
-            <div class="ablation-noise-panel">
-
-                <div class="noise-description">
-
-                    <div class="noise-heading">
-                        Select SNR
-                    </div>
-
-                    <div class="noise-subheading">
-                    </div>
-
-                </div>
-
-
-                <div class="snr-selector">
-
-                    <button class="snr-button active" data-ablation-snr="-10">
-                        <span class="snr-value">−10 dB</span>
-                        <span class="snr-label">Noisy</span>
-                    </button>
-
-                    <button class="snr-button" data-ablation-snr="-5">
-                        <span class="snr-value">−5 dB</span>
-                        <span class="snr-label">Noisy</span>
-                    </button>
-
-                    <button class="snr-button" data-ablation-snr="clean">
-                        <span class="snr-value">Clean</span>
-                        <span class="snr-label">No Noise</span>
-                    </button>
-
-                </div>
-
-
-                <div class="current-condition">
-
-                    <span>
-                        Current condition:
+                    <span class="section-label">
+                        Ablation Study
                     </span>
 
-                    <strong id="current-ablation-snr">
-                        SNR = −10 dB
-                    </strong>
+                    <h2>
+                        Component Analysis
+                    </h2>
 
+                    <p>
+                        Comparison of StreamN2L variants under
+                        different noise conditions.
+                    </p>
+
+                </div>
+
+
+                <!-- ==========================================
+                     Ablation SNR selector
+                     ========================================== -->
+
+                <div class="snr-control">
+
+                    <div class="snr-title">
+                        Noise Condition
+                    </div>
+
+
+                    <div class="snr-selector">
+
+                        <button
+                            type="button"
+                            class="snr-btn active"
+                            data-ablation-snr="-10"
+                        >
+                            SNR = −10 dB
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="snr-btn"
+                            data-ablation-snr="-5"
+                        >
+                            SNR = −5 dB
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="snr-btn"
+                            data-ablation-snr="clean"
+                        >
+                            Clean / No Noise
+                        </button>
+
+                    </div>
+
+
+                    <div class="snr-current">
+                        Current condition:
+                        <span id="current-ablation-snr">
+                            SNR = −10 dB
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <!-- ==========================================
+                     Ablation examples
+                     ========================================== -->
+
+                <div
+                    id="ablation-container"
+                    class="examples-container"
+                >
+                    <!-- Generated by script.js -->
                 </div>
 
             </div>
 
-
-            <div id="ablation-container"></div>
-
         </section>
+
 
     </main>
 
 
-    <!-- =====================================================
+    <!-- ======================================================
          Footer
-    ====================================================== -->
+         ====================================================== -->
 
     <footer class="footer">
 
-        <div class="footer-content">
+        <div class="container footer-content">
 
-            <div class="footer-title">
-                StreamN2L
+            <div>
+
+                <strong>
+                    StreamN2L
+                </strong>
+
+                <p>
+                    A Low-latency Streaming
+                    Normal-to-Lombard Speech Conversion
+                </p>
+
             </div>
 
-            <div class="footer-text">
-                Streaming Normal-to-Lombard Speech Conversion
-            </div>
 
-            <a
-                href="https://github.com/whitechy/StreamN2L"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                GitHub Repository
-            </a>
+            <div class="footer-links">
+
+                <a
+                    href="https://github.com/WhiteChy/StreamN2L"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    GitHub
+                </a>
+
+            </div>
 
         </div>
 
     </footer>
 
+
+    <!-- ======================================================
+         JavaScript
+         ====================================================== -->
 
     <script src="script.js"></script>
 
