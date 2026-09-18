@@ -150,9 +150,8 @@
                 </p>
 
                 <p>
-                    All speech examples are presented with the same
-                    audio interface to facilitate direct listening
-                    comparison.
+                    All speech samples are energy-normalized and mixed with the same
+                    noise to enable a fair comparison of noise robustness.
                 </p>
 
             </div>
@@ -197,35 +196,19 @@ The corresponding text will be displayed for clean speech.
 
                 <div class="snr-selector">
 
-                    <button
-                        class="snr-button active"
-                        data-snr="-10"
-                    >
-
-                        <span class="snr-value">
-                            −10 dB
-                        </span>
-
-                        <span class="snr-label">
-                            Noisy
-                        </span>
-
+                    <button class="snr-button active" data-snr="-10">
+                        <span class="snr-value">−10 dB</span>
+                        <span class="snr-label">Noisy</span>
                     </button>
 
+                    <button class="snr-button" data-snr="-5">
+                        <span class="snr-value">−5 dB</span>
+                        <span class="snr-label">Noisy</span>
+                    </button>
 
-                    <button
-                        class="snr-button"
-                        data-snr="clean"
-                    >
-
-                        <span class="snr-value">
-                            Clean
-                        </span>
-
-                        <span class="snr-label">
-                            No Noise
-                        </span>
-
+                    <button class="snr-button" data-snr="clean">
+                        <span class="snr-value">Clean</span>
+                        <span class="snr-label">No Noise</span>
                     </button>
 
                 </div>
@@ -296,35 +279,19 @@ The corresponding text will be displayed for clean speech.
 
                 <div class="snr-selector">
 
-                    <button
-                        class="snr-button active"
-                        data-ablation-snr="-10"
-                    >
-
-                        <span class="snr-value">
-                            −10 dB
-                        </span>
-
-                        <span class="snr-label">
-                            Noisy
-                        </span>
-
+                    <button class="snr-button active" data-ablation-snr="-10">
+                        <span class="snr-value">−10 dB</span>
+                        <span class="snr-label">Noisy</span>
                     </button>
 
+                    <button class="snr-button" data-ablation-snr="-5">
+                        <span class="snr-value">−5 dB</span>
+                        <span class="snr-label">Noisy</span>
+                    </button>
 
-                    <button
-                        class="snr-button"
-                        data-ablation-snr="clean"
-                    >
-
-                        <span class="snr-value">
-                            Clean
-                        </span>
-
-                        <span class="snr-label">
-                            No Noise
-                        </span>
-
+                    <button class="snr-button" data-ablation-snr="clean">
+                        <span class="snr-value">Clean</span>
+                        <span class="snr-label">No Noise</span>
                     </button>
 
                 </div>

@@ -424,7 +424,7 @@ main {
     display: grid;
 
     grid-template-columns:
-        repeat(6, 1fr);
+        repeat(3, 1fr);
 
     gap: 10px;
 
@@ -854,4 +854,16 @@ footer strong {
     color: #111827;
     margin-bottom: 6px;
 
+}
+
+/* ============================================================
+   Ablation references
+   ============================================================ */
+
+.audio-item.reference {
+    background: #fafafa;
+}
+
+.audio-item.reference .audio-name {
+    font-weight: 650;
 }

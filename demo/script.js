@@ -1,150 +1,353 @@
-/* ============================================================
-   StreamN2L Demo
-   ============================================================ */
+// ============================================================
+// StreamN2L Demo
+// ============================================================
 
-
-/* ============================================================
-   Main Demo
-   ============================================================ */
+// ------------------------------------------------------------
+// SNR options
+// ------------------------------------------------------------
 
 const snrOptions = {
+    "-10": {
+        label: "SNR = −10 dB",
+        folder: "snr_-10dB"
+    },
+
+    "-5": {
+        label: "SNR = −5 dB",
+        folder: "snr_-5dB"
+    },
 
     clean: {
         label: "Clean / No Noise",
         folder: null
-    },
-
-    "-10": {
-        label: "SNR = −10 dB",
-        folder: "snr_-10dB"
     }
-
 };
 
 
-/*
- * Main demo methods
- */
+// ------------------------------------------------------------
+// Main demo methods
+// ------------------------------------------------------------
 
 const methods = [
-
     {
-        file: "normal.wav",
+        id: "normal",
         name: "Normal Speech",
-        category: "reference"
+        file: "normal.wav",
+        className: "normal"
     },
+
     {
-        file: "cyclegan.wav",
+        id: "cyclegan",
         name: "CycleGAN",
-        category: "baseline"
+        file: "cyclegan.wav",
+        className: ""
     },
 
     {
-        file: "stargan.wav",
+        id: "stargan",
         name: "StarGAN",
-        category: "baseline"
+        file: "stargan.wav",
+        className: ""
     },
+
     {
-        file: "streamvc.wav",
+        id: "streamvc",
         name: "StreamVC",
-        category: "baseline"
+        file: "streamvc.wav",
+        className: ""
     },
 
     {
-        file: "meanvc.wav",
+        id: "meanvc",
         name: "MeanVC",
-        category: "baseline"
+        file: "meanvc.wav",
+        className: ""
     },
 
     {
-        file: "meanvc_p.wav",
+        id: "meanvc_p",
         name: "MeanVC-Pretrained",
-        category: "baseline"
+        file: "meanvc_p.wav",
+        className: ""
     },
 
     {
-        file: "meanvc2_p.wav",
+        id: "meanvc2_p",
         name: "MeanVC2-Pretrained",
-        category: "baseline"
+        file: "meanvc2_p.wav",
+        className: ""
     },
+
     {
-        file: "streamn2l.wav",
+        id: "streamn2l",
         name: "StreamN2L",
-        category: "ours"
+        file: "streamn2l.wav",
+        className: "ours"
     },
+
     {
-        file: "pgd_n2l.wav",
+        id: "pgd_n2l",
         name: "PGD-N2L",
-        category: "baseline"
+        file: "pgd_n2l.wav",
+        className: ""
     },
+
     {
-        file: "lombard.wav",
+        id: "lombard",
         name: "Lombard Speech",
-        category: "reference"
+        file: "lombard.wav",
+        className: "reference"
     }
 ];
 
 
-/*
- * Current main-demo SNR
- *
- * Important:
- * -10 dB is the default condition.
- */
+// ------------------------------------------------------------
+// Ablation methods
+// ------------------------------------------------------------
+
+const ablationMethods = [
+    {
+        id: "base-noda",
+        name: "Stage1 w/o Data Augmentation",
+        folder: "base-noda"
+    },
+
+    {
+        id: "base-nohu",
+        name: "Stage1 w/o HuBERT Supervision",
+        folder: "base-nohu"
+    },
+
+    {
+        id: "base-nospk",
+        name: "Stage1 w/o Gated Speaker Encoder",
+        folder: "base-nospk"
+    },
+
+    {
+        id: "nopost",
+        name: "StreamN2L w/o Post-training",
+        folder: "nopost"
+    },
+
+    {
+        id: "proposed-noacou",
+        name: "StreamN2L w/o Acoustic Loss",
+        folder: "proposed-noacou"
+    },
+
+    {
+        id: "proposed-noGRPO",
+        name: "StreamN2L w/o GRPO Loss",
+        folder: "proposed-noGRPO"
+    },
+
+    {
+        id: "proposed",
+        name: "StreamN2L",
+        folder: "proposed",
+        className: "ours"
+    }
+];
+
+
+// ------------------------------------------------------------
+// Ablation reference audio
+// ------------------------------------------------------------
+
+const ablationReference = {
+    normal: "audio/ablation/reference/normal",
+    lombard: "audio/ablation/reference/lombard"
+};
+
+
+// ------------------------------------------------------------
+// Global state
+// ------------------------------------------------------------
 
 window.currentSNR = "-10";
+window.ablationSNR = "-10";
 
 
-/* ============================================================
-   Main Demo Audio Path
-   ============================================================ */
+// ------------------------------------------------------------
+// Utility: stop all other audio
+// ------------------------------------------------------------
 
-function getAudioPath(example, filename) {
+function stopOtherAudio(currentAudio) {
+    const audios = document.querySelectorAll("audio");
 
-    const option =
-        snrOptions[window.currentSNR];
-
-    /*
-     * Clean audio
-     */
-    if (
-        window.currentSNR === "clean"
-        || option.folder === null
-    ) {
-
-        return (
-            `audio/${example}/${filename}`
-        );
-
-    }
-
-
-    /*
-     * Noisy audio
-     *
-     * Example:
-     *
-     * audio/example2/snr_-10dB/streamn2l.wav
-     */
-
-    return (
-        `audio/${example}/` +
-        `${option.folder}/${filename}`
-    );
-
+    audios.forEach(audio => {
+        if (audio !== currentAudio) {
+            audio.pause();
+            audio.currentTime = 0;
+        }
+    });
 }
 
 
-/* ============================================================
-   Render Main Demo
-   ============================================================ */
+// ------------------------------------------------------------
+// Utility: create audio element
+// ------------------------------------------------------------
+
+function createAudioElement(src) {
+    const audio = document.createElement("audio");
+
+    audio.controls = true;
+    audio.preload = "none";
+    audio.src = src;
+
+    audio.addEventListener("play", function () {
+        stopOtherAudio(audio);
+    });
+
+    return audio;
+}
+
+
+// ------------------------------------------------------------
+// Main demo audio path
+// ------------------------------------------------------------
+
+function getAudioPath(exampleIndex, fileName) {
+    const option = snrOptions[window.currentSNR];
+
+    let path = `audio/example${exampleIndex}/`;
+
+    if (option && option.folder) {
+        path += `${option.folder}/`;
+    }
+
+    path += fileName;
+
+    return path;
+}
+
+
+// ------------------------------------------------------------
+// Ablation audio path
+// ------------------------------------------------------------
+
+function getAblationAudioPath(folder, exampleIndex) {
+    let path = `audio/ablation/${folder}/`;
+
+    if (window.ablationSNR !== "clean") {
+        path += `snr_${window.ablationSNR}dB/`;
+    }
+
+    path += `example${exampleIndex}.wav`;
+
+    return path;
+}
+
+
+// ------------------------------------------------------------
+// Ablation reference audio path
+// ------------------------------------------------------------
+
+function getAblationReferenceAudioPath(type, exampleIndex) {
+    let path = `${ablationReference[type]}/`;
+
+    if (window.ablationSNR !== "clean") {
+        path += `snr_${window.ablationSNR}dB/`;
+    }
+
+    path += `example${exampleIndex}.wav`;
+
+    return path;
+}
+
+
+// ------------------------------------------------------------
+// Transcript for clean examples
+// ------------------------------------------------------------
+
+const transcripts = {
+    1: "",
+    2: ""
+};
+
+
+// ------------------------------------------------------------
+// Create main demo audio item
+// ------------------------------------------------------------
+
+function createAudioItem(method, exampleIndex) {
+
+    const item = document.createElement("div");
+
+    item.className = "audio-item";
+
+    if (method.className) {
+        item.classList.add(method.className);
+    }
+
+    const name = document.createElement("div");
+
+    name.className = "audio-name";
+    name.textContent = method.name;
+
+    const audioContainer = document.createElement("div");
+
+    audioContainer.className = "audio-control";
+
+    const src = getAudioPath(
+        exampleIndex,
+        method.file
+    );
+
+    const audio = createAudioElement(src);
+
+    audio.addEventListener("error", function () {
+        item.classList.add("audio-missing");
+    });
+
+    audioContainer.appendChild(audio);
+
+    item.appendChild(name);
+    item.appendChild(audioContainer);
+
+    return item;
+}
+
+
+// ------------------------------------------------------------
+// Create transcript
+// ------------------------------------------------------------
+
+function createTranscript(exampleIndex) {
+
+    const transcript = document.createElement("div");
+
+    transcript.className = "transcript";
+
+    const option = snrOptions[window.currentSNR];
+
+    if (option && option.folder === null) {
+
+        const text = transcripts[exampleIndex];
+
+        if (text) {
+            transcript.textContent = text;
+        } else {
+            transcript.style.display = "none";
+        }
+
+    } else {
+
+        transcript.style.display = "none";
+    }
+
+    return transcript;
+}
+
+
+// ------------------------------------------------------------
+// Render main demo
+// ------------------------------------------------------------
 
 function renderExamples() {
 
-    const container =
-        document.getElementById(
-            "examples-container"
-        );
+    const container = document.getElementById("examples-container");
 
     if (!container) {
         return;
@@ -152,720 +355,450 @@ function renderExamples() {
 
     container.innerHTML = "";
 
+    // Only display example1 and example2
+    const examples = [1, 2];
 
-    /*
-     * Only two examples
-     */
+    examples.forEach(exampleIndex => {
 
-    for (
-        let exampleIndex = 1;
-        exampleIndex <= 2;
-        exampleIndex++
-    ) {
+        const exampleBlock = document.createElement("div");
 
-        const exampleCard =
-            document.createElement(
-                "div"
+        exampleBlock.className = "example-block";
+
+        const title = document.createElement("h3");
+
+        title.className = "example-title";
+
+        title.textContent = `Example ${exampleIndex}`;
+
+        exampleBlock.appendChild(title);
+
+        const transcript = createTranscript(exampleIndex);
+
+        exampleBlock.appendChild(transcript);
+
+        methods.forEach(method => {
+
+            const item = createAudioItem(
+                method,
+                exampleIndex
             );
 
-        exampleCard.className =
-            "example-card";
+            exampleBlock.appendChild(item);
 
+        });
 
-        exampleCard.innerHTML = `
+        container.appendChild(exampleBlock);
 
-    <div class="example-header">
-
-        <div class="example-number">
-            Example ${exampleIndex}
-        </div>
-
-    </div>
-
-    <div class="audio-list"></div>
-
-    ${
-        window.currentSNR === "clean"
-        ? `
-            <div class="example-transcript">
-
-                <div class="transcript-chinese">
-                    ${
-                        exampleIndex === 1
-                            ? "对应文本: 中国人非常友善和热情"
-                            : "对应文本: 中国银行卡产业近年来发展迅速。"
-                    }
-                </div>
-
-                <div class="transcript-english">
-                    ${
-                        exampleIndex === 1
-                            ? "Corresponding text: Chinese people are very friendly and warm-hearted."
-                            : "Corresponding text: China's bank card industry has developed rapidly in recent years."
-                    }
-                </div>
-
-            </div>
-        `
-        : ""
-    }
-
-`;
-
-        const audioList =
-            exampleCard.querySelector(
-                ".audio-list"
-            );
-
-
-        /*
-         * Add all methods
-         */
-
-        methods.forEach(
-            method => {
-
-                const audioItem =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                audioItem.className =
-                    `audio-item ${method.category}`;
-
-
-                const audioPath =
-                    getAudioPath(
-                        `example${exampleIndex}`,
-                        method.file
-                    );
-
-
-                audioItem.innerHTML = `
-
-                    <div class="audio-info">
-
-                        <div class="audio-name">
-                            ${method.name}
-                        </div>
-                        <div class="audio-category">
-                            ${method.category}
-                        </div>
-                    </div>
-
-
-                    <audio
-                        controls
-                        preload="none"
-                    >
-
-                        <source
-                            src="${audioPath}"
-                            type="audio/wav"
-                        >
-
-                    </audio>
-
-                `;
-
-
-                const audio =
-                    audioItem.querySelector(
-                        "audio"
-                    );
-
-
-                /*
-                 * Only one audio can play
-                 * at the same time.
-                 */
-
-                audio.addEventListener(
-                    "play",
-                    () => {
-
-                        stopOtherAudio(
-                            audio
-                        );
-
-                    }
-                );
-
-
-                /*
-                 * Missing audio
-                 */
-
-                audio.addEventListener(
-                    "error",
-                    () => {
-
-                        audioItem.classList.add(
-                            "audio-missing"
-                        );
-
-                    }
-                );
-
-
-                audioList.appendChild(
-                    audioItem
-                );
-
-            }
-        );
-
-
-        container.appendChild(
-            exampleCard
-        );
-
-    }
-
+    });
 }
 
 
-/* ============================================================
-   Main SNR Selector
-   ============================================================ */
+// ------------------------------------------------------------
+// Update main SNR
+// ------------------------------------------------------------
 
 function updateSNR(snr) {
-
-    /*
-     * Check whether option exists
-     */
 
     if (!snrOptions[snr]) {
         return;
     }
 
-
     window.currentSNR = snr;
 
+    // Update active button
+    document.querySelectorAll("[data-snr]").forEach(button => {
 
-    /*
-     * Update button state
-     */
+        if (button.dataset.snr === snr) {
+            button.classList.add("active");
+        } else {
+            button.classList.remove("active");
+        }
 
-    document
-        .querySelectorAll(
-            "[data-snr]"
-        )
-        .forEach(
-            button => {
+    });
 
-                button.classList.toggle(
-                    "active",
-                    button.dataset.snr === snr
-                );
+    // Update displayed label if present
+    const label = document.getElementById("current-snr");
 
-            }
-        );
-
-
-    /*
-     * Update current condition
-     */
-
-    const current =
-        document.getElementById(
-            "current-snr"
-        );
-
-
-    if (current) {
-
-        current.textContent =
-            snrOptions[snr].label;
-
+    if (label) {
+        label.textContent = snrOptions[snr].label;
     }
-
-
-    /*
-     * Re-render audio
-     */
 
     renderExamples();
-
 }
 
 
-/* ============================================================
-   Ablation Study
-   ============================================================ */
+// ------------------------------------------------------------
+// Create ablation audio item
+// ------------------------------------------------------------
 
-
-/*
- * Ablation variants
- *
- * The folder names are kept consistent with
- * the actual directory names.
- */
-
-const ablationMethods = [
-
-    {
-        folder: "base-noda",
-        name: "Stage1 w/o Data Augmentation",
-        category: ""
-    },
-
-    {
-        folder: "base-nohu",
-        name: "Stage1 w/o HuBERT Supervision",
-        category: ""
-    },
-
-    {
-        folder: "base-nospk",
-        name: "Stage1 w/o Gated Speaker Encoder",
-        category: ""
-    },
-
-    {
-        folder: "nopost",
-        name: "StreamN2L w/o Post-training",
-        category: ""
-    },
-
-    {
-        folder: "proposed-noacou",
-        name: "StreamN2L w/o Acoustic Loss",
-        category: ""
-    },
-
-    {
-        folder: "proposed-noGRPO",
-        name: "StreamN2L w/o GRPO Loss",
-        category: ""
-    },
-
-    {
-        folder: "proposed",
-        name: "StreamN2L",
-        category: ""
-    }
-
-];
-
-
-/*
- * Current ablation SNR
- *
- * Again, -10 dB is the default.
- */
-
-window.ablationSNR = "-10";
-
-
-/* ============================================================
-   Ablation Audio Path
-   ============================================================ */
-
-function getAblationAudioPath(
-    folder,
-    exampleIndex
+function addAblationAudioItem(
+    container,
+    name,
+    src,
+    className = ""
 ) {
 
-    /*
-     * Clean
-     *
-     * audio/ablation/
-     *     base-noda/
-     *         example1.wav
-     */
+    const item = document.createElement("div");
 
-    if (
-        window.ablationSNR === "clean"
-    ) {
+    item.className = "audio-item";
 
-        return (
-            `audio/ablation/` +
-            `${folder}/` +
-            `example${exampleIndex}.wav`
-        );
-
+    if (className) {
+        item.classList.add(className);
     }
 
+    const nameElement = document.createElement("div");
 
-    /*
-     * Noisy
-     *
-     * audio/ablation/
-     *     base-noda/
-     *         snr_-10dB/
-     *             example1.wav
-     */
+    nameElement.className = "audio-name";
 
-    return (
-        `audio/ablation/` +
-        `${folder}/` +
-        `snr_-10dB/` +
-        `example${exampleIndex}.wav`
-    );
+    nameElement.textContent = name;
 
+    const audioContainer = document.createElement("div");
+
+    audioContainer.className = "audio-control";
+
+    const audio = createAudioElement(src);
+
+    audio.addEventListener("error", function () {
+        item.classList.add("audio-missing");
+    });
+
+    audioContainer.appendChild(audio);
+
+    item.appendChild(nameElement);
+    item.appendChild(audioContainer);
+
+    container.appendChild(item);
+
+    return item;
 }
 
 
-/* ============================================================
-   Render Ablation
-   ============================================================ */
+// ------------------------------------------------------------
+// Render ablation study
+// ------------------------------------------------------------
 
 function renderAblation() {
 
-    const container =
-        document.getElementById(
-            "ablation-container"
-        );
-
+    const container = document.getElementById(
+        "ablation-container"
+    );
 
     if (!container) {
         return;
     }
 
-
     container.innerHTML = "";
 
+    // Only display example1 and example2
+    const examples = [1, 2];
 
-    /*
-     * Two examples
-     */
+    examples.forEach(exampleIndex => {
 
-    for (
-        let exampleIndex = 1;
-        exampleIndex <= 2;
-        exampleIndex++
-    ) {
+        const exampleBlock = document.createElement("div");
 
-        const exampleCard =
-            document.createElement(
-                "div"
+        exampleBlock.className = "example-block";
+
+        const title = document.createElement("h3");
+
+        title.className = "example-title";
+
+        title.textContent = `Example ${exampleIndex}`;
+
+        exampleBlock.appendChild(title);
+
+
+        // ----------------------------------------------------
+        // 1. Normal Speech
+        // ----------------------------------------------------
+
+        const normalSrc =
+            getAblationReferenceAudioPath(
+                "normal",
+                exampleIndex
             );
 
-
-        exampleCard.className =
-            "example-card";
-
-
-        exampleCard.innerHTML = `
-
-            <div class="example-header">
-
-                <div class="example-number">
-                    Example ${exampleIndex}
-                </div>
-
-            </div>
-
-            <div class="audio-list"></div>
-
-        `;
-
-
-        const audioList =
-            exampleCard.querySelector(
-                ".audio-list"
-            );
-
-
-        /*
-         * Add all ablation variants
-         */
-
-        ablationMethods.forEach(
-            method => {
-
-                const audioItem =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                audioItem.className =
-                    `audio-item ${method.category}`;
-
-
-                const audioPath =
-                    getAblationAudioPath(
-                        method.folder,
-                        exampleIndex
-                    );
-
-
-                audioItem.innerHTML = `
-
-                    <div class="audio-info">
-
-                        <div class="audio-name">
-                            ${method.name}
-                        </div>
-
-                    </div>
-
-
-                    <audio
-                        controls
-                        preload="none"
-                    >
-
-                        <source
-                            src="${audioPath}"
-                            type="audio/wav"
-                        >
-
-                    </audio>
-
-                `;
-
-
-                const audio =
-                    audioItem.querySelector(
-                        "audio"
-                    );
-
-
-                /*
-                 * Only one audio can play
-                 */
-
-                audio.addEventListener(
-                    "play",
-                    () => {
-
-                        stopOtherAudio(
-                            audio
-                        );
-
-                    }
-                );
-
-
-                /*
-                 * Missing audio
-                 */
-
-                audio.addEventListener(
-                    "error",
-                    () => {
-
-                        audioItem.classList.add(
-                            "audio-missing"
-                        );
-
-                    }
-                );
-
-
-                audioList.appendChild(
-                    audioItem
-                );
-
-            }
+        addAblationAudioItem(
+            exampleBlock,
+            "Normal Speech",
+            normalSrc,
+            "reference"
         );
 
 
-        container.appendChild(
-            exampleCard
+        // ----------------------------------------------------
+        // 2. Ablation variants
+        // ----------------------------------------------------
+
+        ablationMethods.forEach(method => {
+
+            const src =
+                getAblationAudioPath(
+                    method.folder,
+                    exampleIndex
+                );
+
+            addAblationAudioItem(
+                exampleBlock,
+                method.name,
+                src,
+                method.className || ""
+            );
+
+        });
+
+
+        // ----------------------------------------------------
+        // 3. Ground Truth Lombard Speech
+        // ----------------------------------------------------
+
+        const lombardSrc =
+            getAblationReferenceAudioPath(
+                "lombard",
+                exampleIndex
+            );
+
+        addAblationAudioItem(
+            exampleBlock,
+            "Ground Truth Lombard Speech (L80)",
+            lombardSrc,
+            "reference"
         );
 
-    }
 
+        container.appendChild(exampleBlock);
+
+    });
 }
 
 
-/* ============================================================
-   Ablation SNR Selector
-   ============================================================ */
+// ------------------------------------------------------------
+// Update ablation SNR
+// ------------------------------------------------------------
 
 function updateAblationSNR(snr) {
 
-    /*
-     * Only two conditions are currently supported:
-     *
-     * -10
-     * clean
-     */
-
-    if (
-        snr !== "-10"
-        && snr !== "clean"
-    ) {
+    if (!snrOptions[snr]) {
         return;
     }
 
-
     window.ablationSNR = snr;
 
+    // Update active button
+    document.querySelectorAll(
+        "[data-ablation-snr]"
+    ).forEach(button => {
 
-    /*
-     * Update button state
-     */
-
-    document
-        .querySelectorAll(
-            "[data-ablation-snr]"
-        )
-        .forEach(
-            button => {
-
-                button.classList.toggle(
-                    "active",
-                    button.dataset.ablationSnr === snr
-                );
-
-            }
-        );
-
-
-    /*
-     * Update text
-     */
-
-    const current =
-        document.getElementById(
-            "current-ablation-snr"
-        );
-
-
-    if (current) {
-
-        if (snr === "clean") {
-
-            current.textContent =
-                "Clean / No Noise";
-
+        if (button.dataset.ablationSnr === snr) {
+            button.classList.add("active");
         } else {
-
-            current.textContent =
-                "SNR = −10 dB";
-
+            button.classList.remove("active");
         }
 
+    });
+
+
+    // Update displayed label if present
+    const label = document.getElementById(
+        "current-ablation-snr"
+    );
+
+    if (label) {
+        label.textContent =
+            snrOptions[snr].label;
     }
 
 
-    /*
-     * Re-render
-     */
-
     renderAblation();
-
 }
 
 
-/* ============================================================
-   Stop Other Audio
-   ============================================================ */
+// ------------------------------------------------------------
+// Initialize main SNR selector
+// ------------------------------------------------------------
 
-function stopOtherAudio(
-    currentAudio
-) {
+function initializeMainSNRSelector() {
 
-    document
-        .querySelectorAll(
-            "audio"
-        )
-        .forEach(
-            audio => {
+    const buttons =
+        document.querySelectorAll(
+            "[data-snr]"
+        );
+
+    buttons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                const snr =
+                    this.dataset.snr;
+
+                updateSNR(snr);
+
+            }
+        );
+
+    });
+}
+
+
+// ------------------------------------------------------------
+// Initialize ablation SNR selector
+// ------------------------------------------------------------
+
+function initializeAblationSNRSelector() {
+
+    const buttons =
+        document.querySelectorAll(
+            "[data-ablation-snr]"
+        );
+
+    buttons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                const snr =
+                    this.dataset.ablationSnr;
+
+                updateAblationSNR(snr);
+
+            }
+        );
+
+    });
+}
+
+
+// ------------------------------------------------------------
+// Set initial active button
+// ------------------------------------------------------------
+
+function initializeActiveButtons() {
+
+    document.querySelectorAll(
+        "[data-snr]"
+    ).forEach(button => {
+
+        if (
+            button.dataset.snr ===
+            window.currentSNR
+        ) {
+            button.classList.add("active");
+        }
+
+    });
+
+
+    document.querySelectorAll(
+        "[data-ablation-snr]"
+    ).forEach(button => {
+
+        if (
+            button.dataset.ablationSnr ===
+            window.ablationSNR
+        ) {
+            button.classList.add("active");
+        }
+
+    });
+}
+
+
+// ------------------------------------------------------------
+// Global audio behavior
+// ------------------------------------------------------------
+
+function initializeAudioBehavior() {
+
+    document.addEventListener(
+        "play",
+        function (event) {
+
+            if (
+                event.target &&
+                event.target.tagName === "AUDIO"
+            ) {
+                stopOtherAudio(event.target);
+            }
+
+        },
+        true
+    );
+}
+
+
+// ------------------------------------------------------------
+// Smooth navigation
+// ------------------------------------------------------------
+
+function initializeNavigation() {
+
+    const links =
+        document.querySelectorAll(
+            'a[href^="#"]'
+        );
+
+    links.forEach(link => {
+
+        link.addEventListener(
+            "click",
+            function (event) {
+
+                const targetId =
+                    this.getAttribute("href");
 
                 if (
-                    audio !== currentAudio
+                    !targetId ||
+                    targetId === "#"
                 ) {
-
-                    audio.pause();
-
+                    return;
                 }
 
+                const target =
+                    document.querySelector(
+                        targetId
+                    );
+
+                if (!target) {
+                    return;
+                }
+
+                event.preventDefault();
+
+                target.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
             }
         );
 
+    });
 }
 
 
-/* ============================================================
-   Button Initialization
-   ============================================================ */
-
-function initializeSelectors() {
-
-
-    /*
-     * Main Demo SNR buttons
-     */
-
-    document
-        .querySelectorAll(
-            "[data-snr]"
-        )
-        .forEach(
-            button => {
-
-                button.addEventListener(
-                    "click",
-                    () => {
-
-                        updateSNR(
-                            button.dataset.snr
-                        );
-
-                    }
-                );
-
-            }
-        );
-
-
-    /*
-     * Ablation SNR buttons
-     */
-
-    document
-        .querySelectorAll(
-            "[data-ablation-snr]"
-        )
-        .forEach(
-            button => {
-
-                button.addEventListener(
-                    "click",
-                    () => {
-
-                        updateAblationSNR(
-                            button.dataset.ablationSnr
-                        );
-
-                    }
-                );
-
-            }
-        );
-
-}
-
-
-/* ============================================================
-   Initialize
-   ============================================================ */
+// ------------------------------------------------------------
+// Initialize page
+// ------------------------------------------------------------
 
 document.addEventListener(
     "DOMContentLoaded",
-    () => {
+    function () {
 
-        /*
-         * Main Demo
-         */
+        initializeMainSNRSelector();
 
-        initializeSelectors();
+        initializeAblationSNRSelector();
 
-        updateSNR("-10");
+        initializeActiveButtons();
 
+        initializeAudioBehavior();
 
-        /*
-         * Ablation Study
-         */
+        initializeNavigation();
 
-        updateAblationSNR("-10");
+        renderExamples();
+
+        renderAblation();
 
     }
 );
